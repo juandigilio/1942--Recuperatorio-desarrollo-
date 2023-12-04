@@ -1,7 +1,17 @@
 #include "Credits.h"
 
+#include "Menu"
+
+using namespace GameData;
+using namespace Menu;
+
 namespace Credits
 {
+	extern Vector2 gitHubPos{};
+	extern Vector2 gitHubSize{};
+	extern Vector2 itchioPos{};
+	extern Vector2 itchioSize{};
+
 	static void DrawCredits()
 	{
 		Vector2 textPos;

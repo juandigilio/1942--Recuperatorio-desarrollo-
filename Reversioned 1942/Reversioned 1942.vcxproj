@@ -20,13 +20,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Bullet.h" />
+    <ClInclude Include="Src\Credits.h" />
     <ClInclude Include="Src\GameData.h" />
+    <ClInclude Include="Src\Menu.h" />
     <ClInclude Include="Src\MenuManager.h" />
     <ClInclude Include="Src\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Bullet.cpp" />
+    <ClCompile Include="Src\Credits.cpp" />
     <ClCompile Include="Src\GameData.cpp" />
+    <ClCompile Include="Src\Menu.cpp" />
     <ClCompile Include="Src\MenuManager.cpp" />
     <ClCompile Include="Src\Player.cpp" />
   </ItemGroup>

@@ -2,7 +2,7 @@
 
 #include "raylib.h"
 
-namespace Menu
+namespace MenuManager
 {
 	extern Texture2D background;
 	extern Texture2D smallContainer;
@@ -35,8 +35,6 @@ namespace Menu
 	extern Vector2 backButtonPos;
 	extern Vector2 menuButtonPos;
 	extern Vector2 exitButtonPos;
-	extern Vector2 gitHubPos;
-	extern Vector2 gitHubSize;
 
 	extern bool isClicking;
 
