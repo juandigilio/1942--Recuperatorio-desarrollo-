@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Bullet.h" />
     <ClInclude Include="Src\GameData.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Bullet.cpp" />
     <ClCompile Include="Src\GameData.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
