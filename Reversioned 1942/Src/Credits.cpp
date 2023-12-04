@@ -1,16 +1,16 @@
 #include "Credits.h"
 
-#include "Menu"
+#include "Menu.h"
 
-using namespace GameData;
+
 using namespace Menu;
 
 namespace Credits
 {
-	extern Vector2 gitHubPos{};
-	extern Vector2 gitHubSize{};
-	extern Vector2 itchioPos{};
-	extern Vector2 itchioSize{};
+	Vector2 gitHubPos{};
+	Vector2 gitHubSize{};
+	Vector2 itchioPos{};
+	Vector2 itchioSize{};
 
 	static void DrawCredits()
 	{
@@ -71,12 +71,74 @@ namespace Credits
 		DrawTextEx(font, "https://juandigilio.itch.io", itchioPos, fontSize * 0.2f, spacing / 8.0f, RAYWHITE);
 	}
 
-	static void ShowCredits(GameSceen& currentSceen)
+	static void GetCreditsInput(GameSceen& currentSceen)
+	{
+		int mouseX = GetMouseX();
+		int mouseY = GetMouseY();
+
+		if ((mouseX > backButtonPos.x && mouseX < backButtonPos.x + backButton.width) && (mouseY > backButtonPos.y && mouseY < backButtonPos.y + backButton.height))
+		{
+			DrawTextureV(backButtonAct, backButtonPos, WHITE);
+
+			if (!isClicking)
+			{
+				isClicking = true;
+
+				PlaySound(click);
+			}
+
+			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+			{
+				PlaySound(clickPressed);
+				currentSceen = GameSceen::MENU;
+			}
+		}
+		else if ((mouseX > gitHubPos.x && mouseX < gitHubPos.x + gitHubSize.x) && (mouseY > gitHubPos.y && mouseY < gitHubPos.y + gitHubSize.y))
+		{
+			DrawTextEx(font, "https://github.com/juandigilio", gitHubPos, fontSize * 0.2f, spacing / 8.0f, GREEN);
+
+			if (!isClicking)
+			{
+				isClicking = true;
+
+				PlaySound(click);
+			}
+
+			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+			{
+				PlaySound(clickPressed);
+				OpenURL("https://github.com/juandigilio");
+			}
+		}
+		else if ((mouseX > itchioPos.x && mouseX < itchioPos.x + itchioSize.x) && (mouseY > itchioPos.y && mouseY < itchioPos.y + itchioSize.y))
+		{
+			DrawTextEx(font, "https://juandigilio.itch.io", itchioPos, fontSize * 0.2f, spacing / 8.0f, GREEN);
+
+			if (!isClicking)
+			{
+				isClicking = true;
+
+				PlaySound(click);
+			}
+
+			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+			{
+				PlaySound(clickPressed);
+				OpenURL("https://juandigilio.itch.io");
+			}
+		}
+		else
+		{
+			isClicking = false;
+		}
+	}
+
+	void ShowCredits(GameSceen& currentSceen)
 	{
 		DrawCredits();
 
 		UpdateMusicStream(menuMusic);
 
-		GetInput(currentSceen);
+		GetCreditsInput(currentSceen);
 	}
 }
