@@ -1,6 +1,12 @@
 #include "Player.h"
 
+#include <iostream>
+
 #include "raymath.h"
+
+
+using namespace std;
+
 
 namespace PlayerUtilities
 {
@@ -13,6 +19,7 @@ namespace PlayerUtilities
         player.source = { 0, 0, static_cast<float>(player.texture.width), static_cast<float>(player.texture.height) };
         player.totalPoints = 0;
         player.availableLives = 3;
+        player.speed = 500.0f;
 
         player.shoot = LoadSound("Assets/Sounds/shoot.wav");
         player.thousand = LoadSound("Assets/Sounds/crash.wav");
@@ -36,7 +43,6 @@ namespace PlayerUtilities
                 player.bullets[i].position = player.GetCenter();
                 player.bullets[i].rotation = player.rotation;
                 player.bullets[i].isAlive = true;
-                player.bullets[i].firstCrossing = true;
 
                 player.bullets[i].direction = Vector2Subtract(GetMousePosition(), player.bullets[i].position);
                 float length = Vector2Length(player.bullets[i].direction);
@@ -52,57 +58,63 @@ namespace PlayerUtilities
 
     static void MovePlayer(Player& player)
     {
-        player.velocity = Vector2Scale(player.direction, player.speed * GetFrameTime());
-        player.position = Vector2Add(player.position, player.velocity);
+        player.position.x += player.velocity.x * GetFrameTime();
+        player.position.y += player.velocity.y * GetFrameTime();
 
-        if (player.position.x > screenWidth + player.texture.width / 2.0f)
+        if (player.position.x > screenWidth - player.texture.width)
         {
-            player.position.x = (-player.texture.width / 2.0f);
-            player.position.y = screenHeight - player.position.y;
+            player.position.x = static_cast<float>(screenWidth - player.texture.width);
         }
-        else if (player.position.x < 0.0f - player.texture.width / 2.0f)
+        else if (player.position.x < 0.0f)
         {
-            player.position.x = screenWidth + (player.texture.width / 2.0f);
-            player.position.y = screenHeight - player.position.y;
+            player.position.x = 0.0f;
         }
-        else if (player.position.y > screenHeight + player.texture.height / 2.0f)
+        else if (player.position.y > screenHeight - player.texture.height)
         {
-            player.position.x = screenWidth - player.position.x;
-            player.position.y = (-player.texture.height / 2.0f);
+            player.position.y = static_cast<float>(screenHeight - player.texture.height);
         }
-        else if (player.position.y < 0.0f - player.texture.height / 2.0f)
+        else if (player.position.y < 0.0f)
         {
-            player.position.x = screenWidth - player.position.x;
-            player.position.y = screenHeight + (player.texture.height / 2.0f);
+            player.position.y = 0.0f;
         }
     }
 
 	void GetPlayerInput(Player& player, GameSceen& currentSceen)
 	{
-        player.rotation = static_cast<float>(atan2(static_cast<double>(GetMousePosition().y - static_cast<double>(player.texture.height / 2.0f)) - player.position.y, static_cast<double>(GetMousePosition().x - static_cast<double>(player.texture.width / 2.0f)) - player.position.x)) * RAD2DEG + 90.0f;
+        double y = static_cast<double>(GetMousePosition().y - static_cast<double>(player.texture.height / 2.0f)) - player.position.y;
+        double x = static_cast<double>(GetMousePosition().x - static_cast<double>(player.texture.width / 2.0f)) - player.position.x;
 
-        if (IsMouseButtonDown(MOUSE_RIGHT_BUTTON))
+        player.rotation = static_cast<float>(atan2(y, x)) * RAD2DEG + 90.0f;
+
+        if (IsKeyDown(KEY_UP))
         {
-            player.speed += 0.05f;
+            player.velocity.y = (- player.maxSpeed);
+            cout << "velociti Y: " << player.velocity.y << endl;
+            cout << "speed: " << player.maxSpeed << endl;
+        }
+        else if (IsKeyDown(KEY_DOWN))
+        {
+            player.velocity.y = (player.maxSpeed);
+            cout << "velociti Y: " << player.velocity.y << endl;
+        }
+        else
+        {
+            player.velocity.y = 0.0f;
+        }
 
-            if (player.speed >= player.maxSpeed)
-            {
-                player.speed = player.maxSpeed;
-            }
-
-            Vector2 targetDirection = Vector2Subtract(GetMousePosition(), player.position);
-            float targetLength = Vector2Length(targetDirection);
-
-            targetDirection = Vector2Divide(targetDirection, { targetLength, targetLength });
-
-            player.direction = Vector2Lerp(player.direction, targetDirection, player.interpolationFactor * GetFrameTime());
-
-            float length = Vector2Length(player.direction);
-
-            if (length > 0.1)
-            {
-                player.direction = Vector2Divide(player.direction, { length, length });
-            }
+        if (IsKeyDown(KEY_LEFT))
+        {
+            player.velocity.x = (-player.maxSpeed);
+            cout << "velociti X: " << player.velocity.x << endl;
+        }
+        else if (IsKeyDown(KEY_RIGHT))
+        {
+            player.velocity.x = (player.maxSpeed);
+            cout << "velociti X: " << player.velocity.x << endl;
+        }
+        else
+        {
+            player.velocity.x = 0.0f;
         }
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
@@ -110,7 +122,9 @@ namespace PlayerUtilities
             Shoot(player);
         }
 
-        if (IsKeyDown(KEY_ESCAPE))
+        double elapsedTime = GetTime() - pauseTimer;
+
+        if (IsKeyDown(KEY_ESCAPE) && elapsedTime > pauseDelay)
         {
             currentSceen = GameSceen::PAUSE;
         }
@@ -126,6 +140,11 @@ namespace PlayerUtilities
         }
 
         MovePlayer(player);
+
+        for (int i = 0; i < maxBulletsQnty; i++)
+        {
+            BulletUtilities::MoveBullet(player.bullets[i]);
+        }
 	}
 
 	void DrawPlayer(Player& player)
@@ -137,13 +156,7 @@ namespace PlayerUtilities
 
         for (int i = 0; i < maxBulletsQnty; i++)
         {
-            if (player.bullets[i].isAlive)
-            {
-                dest = { player.bullets[i].GetCenter().x, player.bullets[i].GetCenter().y, static_cast<float>(player.bullets[i].texture.width), static_cast<float>(player.bullets[i].texture.height) };
-                origin = { static_cast<float>(player.bullets[i].texture.width / 2), static_cast<float>(player.bullets[i].texture.height / 2) };
-
-                DrawTexturePro(player.bullets[i].texture, player.bullets[i].source, dest, origin, player.bullets[i].rotation - 90, RAYWHITE);
-            }
+            BulletUtilities::DrawBullet(player.bullets[i]);
         }
 	}
 }

@@ -11,7 +11,6 @@ struct Bullet
     float rotation{};
     float radius{};
     float speed = 360.0f;
-    bool firstCrossing = true;
     bool isAlive = false;
     Texture2D texture{};
     Rectangle source{};
@@ -24,5 +23,7 @@ struct Bullet
 
 namespace BulletUtilities
 {
-    extern void MoveBullets(Bullet& bullet);
+    extern void MoveBullet(Bullet& bullet);
+
+    extern void DrawBullet(Bullet bullet);
 }

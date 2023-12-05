@@ -18,6 +18,7 @@ struct Enemy
     float radius{};
     Texture2D texture{};
     Rectangle source{};
+    bool isAlive{};
 
     Vector2 GetCenter()
     {
@@ -27,5 +28,7 @@ struct Enemy
 
 namespace EnemyUtilities
 {
-    extern void DeleteEnemies(vector<Enemy> enemies);
+    extern void UpdateEnemies(vector<Enemy>& enemies);
+    extern void DrawEnemies(vector<Enemy>& enemies);
+    extern void DeleteEnemies(vector<Enemy>& enemies);
 }

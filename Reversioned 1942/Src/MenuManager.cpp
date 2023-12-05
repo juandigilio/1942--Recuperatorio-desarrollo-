@@ -35,7 +35,7 @@ namespace MenuManager
 	{
 		GameSceen currentSceen = GameSceen::MENU;
 		Player player;
-		vector<Enemy*> enemies;
+		vector<Enemy> enemies;
 
 		StartUp();
 
@@ -53,7 +53,7 @@ namespace MenuManager
 				}
 				case GameSceen::GAME:
 				{
-					GameLoop::Play(player, currentSceen);
+					GameLoop::Play(player, enemies, currentSceen);
 					break;
 				}
 				case GameSceen::RESULTS:
@@ -63,7 +63,7 @@ namespace MenuManager
 				}
 				case GameSceen::PAUSE:
 				{
-					Pause::ShowPause(player, currentSceen);
+					Pause::ShowPause(player, enemies, currentSceen);
 					break;
 				}
 				case GameSceen::INSTRUCTIONS:

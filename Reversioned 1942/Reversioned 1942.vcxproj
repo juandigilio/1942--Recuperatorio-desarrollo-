@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="Src\Bullet.h" />
     <ClInclude Include="Src\Credits.h" />
+    <ClInclude Include="Src\Enemy.h" />
     <ClInclude Include="Src\FinalResults.h" />
     <ClInclude Include="Src\GameData.h" />
     <ClInclude Include="Src\GameLoop.h" />
@@ -33,6 +34,7 @@
   <ItemGroup>
     <ClCompile Include="Src\Bullet.cpp" />
     <ClCompile Include="Src\Credits.cpp" />
+    <ClCompile Include="Src\Enemy.cpp" />
     <ClCompile Include="Src\FinalResults.cpp" />
     <ClCompile Include="Src\GameData.cpp" />
     <ClCompile Include="Src\GameLoop.cpp" />

@@ -29,4 +29,7 @@ namespace GameData
 	extern float fontSize;
 	extern float spacing;
 	extern float instrucrtionsSpacing;
+
+	extern double pauseTimer;
+	extern double pauseDelay;
 }

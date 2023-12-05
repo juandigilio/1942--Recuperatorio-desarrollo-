@@ -174,33 +174,14 @@ namespace Menu
 				currentSceen = GameSceen::EXIT;
 			}
 		}
+		else if (IsKeyPressed(KEY_ESCAPE))
+		{
+			currentSceen = GameSceen::MENU;
+		}
 		else
 		{
 			isClicking = false;
 		}
-
-		////////
-		/*if (IsKeyPressed(KEY_ESCAPE))
-		{
-			currentSceen = GameSceen::MENU;
-		}
-		else if ((mouseX > backButtonPos.x && mouseX < backButtonPos.x + backButton.width) && (mouseY > backButtonPos.y && mouseY < backButtonPos.y + backButton.height))
-		{
-			DrawTextureV(backButtonAct, backButtonPos, WHITE);
-
-			if (!isClicking)
-			{
-				isClicking = true;
-
-				PlaySound(click);
-			}
-
-			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-			{
-				PlaySound(clickPressed);
-				currentSceen = GameSceen::MENU;
-			}
-		}*/
 	}
 
 	static void DrawMenu()

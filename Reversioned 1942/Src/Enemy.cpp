@@ -1,8 +1,11 @@
 #include "Enemy.h"
 
+#include <iostream>
+
 #include "GameData.h"
 
 
+using namespace std;
 using namespace GameData;
 
 
@@ -11,7 +14,7 @@ namespace EnemyUtilities
     static const double spawnRate = 1.0f;
     static double lastDrop = 0.0f;
 
-    static void LoadEnemy(Enemy enemy)
+    static void LoadEnemy(Enemy& enemy)
     {
         enemy.texture = LoadTexture("Assets/Images/bigAsteroid.png");
         enemy.radius = enemy.texture.width / 2.0f;
@@ -20,11 +23,12 @@ namespace EnemyUtilities
         enemy.position.y = 0.0f;
         enemy.velocity = { 0.0f, enemy.speed };
         enemy.source = { 0.0f, 0.0f, static_cast<float>(enemy.texture.width), static_cast<float>(enemy.texture.height) };
+        enemy.isAlive = true;
 
         lastDrop = GetTime();
     }
 
-    static void MoveEnemies(vector<Enemy> enemies)
+    static void MoveEnemies(vector<Enemy>& enemies)
     {
         for (auto& object : enemies)
         {
@@ -32,22 +36,22 @@ namespace EnemyUtilities
         }
     }
 
-    void UpdateEnemies(vector<Enemy> enemies)
+    void UpdateEnemies(vector<Enemy>& enemies)
     {
         double elapsedTime = GetTime() - lastDrop;
-
+       
         if (elapsedTime > spawnRate)
         {
             Enemy enemy;
             LoadEnemy(enemy);
-
             enemies.push_back(enemy);
+            lastDrop = GetTime();
         }
 
         MoveEnemies(enemies);
     }
 
-    void DrawEnemies(vector<Enemy> enemies)
+    void DrawEnemies(vector<Enemy>& enemies)
     {
         for (auto& object : enemies)
         {
@@ -58,7 +62,7 @@ namespace EnemyUtilities
         }
     }
 
-    void DeleteEnemies(vector<Enemy> enemies)
+    void DeleteEnemies(vector<Enemy>& enemies)
     {
         enemies.clear();
     }

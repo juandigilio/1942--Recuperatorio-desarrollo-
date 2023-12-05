@@ -2,8 +2,11 @@
 
 #include "raymath.h"
 
+#include "Bullet.h"
+
 
 using namespace PlayerUtilities;
+using namespace EnemyUtilities;
 
 namespace GameLoop
 {
@@ -26,47 +29,73 @@ namespace GameLoop
 		pauseButtonPos.y = 15.0f;
 	}
 
-	//static void PlayerCollides(Player& player, GameSceen& gamseSceen)
-	//{
-	//	player.isColliding = true;
-	//	player.lastCollide = static_cast<float>(GetTime());
-	//	player.availableLives--;
-	//	PlaySound(crash);
+	static void PlayerCollides(Player& player, GameSceen& currentSceen)
+	{
+		player.isColliding = true;
+		player.lastCollide = static_cast<float>(GetTime());
+		player.availableLives--;
+		PlaySound(crash);
 
-	//	if (player.totalPoints > highScore)
-	//	{
-	//		highScore = player.totalPoints;
-	//	}
+		if (player.totalPoints > highScore)
+		{
+			highScore = player.totalPoints;
+		}
 
-	//	if (player.availableLives == 0)
-	//	{
-	//		gamseSceen = GameSceen::RESULTS;
-	//	}
-	//}
+		if (player.availableLives == 0)
+		{
+			currentSceen = GameSceen::RESULTS;
+		}
+	}
 
-	//static bool CheckCircleCircleCollision(float radius1, float radius2, Vector2 position1, Vector2 position2)
-	//{
-	//	float actualDistance = Vector2Distance(position1, position2);
-	//	float minDistance = radius1 + radius2;
+	static void CheckCollisions(Player& player, vector<Enemy>& enemies, GameSceen& currentSceen)
+	{
+		for (auto& object : enemies)
+		{
+			float actualDistance;
+			float minDistance;
 
-	//	if (actualDistance <= minDistance)
-	//	{
-	//		return true;
-	//	}
-	//	else
-	//	{
-	//		return false;
-	//	}
-	//}
+			for (int i = 0; i < maxBulletsQnty; i++)
+			{
+				if (player.bullets[i].isAlive)
+				{
+					actualDistance = Vector2Distance(player.bullets[i].GetCenter(), object.GetCenter());
+					minDistance = player.bullets[i].radius + object.radius;
 
-	static void UpdateAll(Player& player)
+					if (actualDistance <= minDistance)
+					{
+						object.isAlive = false;
+
+					}
+				}
+			}
+
+			if (object.isAlive)
+			{
+				actualDistance = Vector2Distance(player.GetCenter(), object.GetCenter());
+				minDistance = player.radius + object.radius;
+
+				if (actualDistance <= minDistance)
+				{
+					PlayerCollides(player, currentSceen);
+				}
+			}
+		}
+
+		enemies.erase(remove_if(enemies.begin(), enemies.end(),[](const Enemy& enemy) { return !enemy.isAlive; }), enemies.end());
+	}
+
+	static void UpdateAll(Player& player, vector<Enemy>& enemies, GameSceen& currentSceen)
 	{	
 		UpdatePlayer(player);
+
+		UpdateEnemies(enemies);
+
+		CheckCollisions(player, enemies, currentSceen);
 		
 		UpdateMusicStream(gameLoopMusic);
 	}
 
-	static void RestartAllEntities(Player& player)
+	static void RestartAllEntities(Player& player, vector<Enemy>& enemies)
 	{
 		player.position.x = screenCenter.x - (player.texture.width / 2);
 		player.position.y = screenCenter.y - (player.texture.height / 2);
@@ -78,13 +107,14 @@ namespace GameLoop
 		for (int i = 0; i < maxBulletsQnty; i++)
 		{
 			player.bullets[i].isAlive = false;
-			player.bullets[i].firstCrossing = true;
 		}
+
+		enemies.clear();
 	}
 
-	static void ShowCrash(Player& player)
+	static void ShowCrash(Player& player, vector<Enemy>& enemies)
 	{
-		player.rotation += 0.6f;
+		player.rotation += 1000.0f * GetFrameTime();
 
 		if (player.rotation >= 360.0f)
 		{
@@ -95,7 +125,7 @@ namespace GameLoop
 		{
 			player.isColliding = false;
 
-			RestartAllEntities(player);
+			RestartAllEntities(player, enemies);
 		}
 	}
 
@@ -139,42 +169,43 @@ namespace GameLoop
 		DrawTextureEx(pauseButton, pauseButtonPos, 0, 1.0, WHITE);
 	}
 
-	void DrawGame(Player player)
+	void DrawGame(Player player, vector<Enemy> enemies)
 	{
 		DrawTextureV(gamePlayBacground, { 0, 0 }, RAYWHITE);
 		DrawPlayer(player);
+		DrawEnemies(enemies);
 		DrawHUD(player);
 	}
 
-	static void GameLoop(Player& player, GameSceen& currentSceen)
+	static void GameLoop(Player& player, vector<Enemy>& enemies, GameSceen& currentSceen)
 	{
 		if (!player.isColliding)
 		{
 			GetPlayerInput(player, currentSceen);
 
-			UpdateAll(player);
+			UpdateAll(player, enemies, currentSceen);
 		}
 		else
 		{
-			ShowCrash(player);
+			ShowCrash(player, enemies);
 		}
 
-		DrawGame(player);
+		DrawGame(player, enemies);
 
 		GetHUDInput(currentSceen);
 	}
 
-	void Play(Player& player, GameSceen& currentSceen)
+	void Play(Player& player, vector<Enemy>& enemies, GameSceen& currentSceen)
 	{
 		if (loading)
 		{
 			LoadGame();
 			LoadPlayer(player);
 			
-			RestartAllEntities(player);
+			RestartAllEntities(player, enemies);
 			loading = false;
 		}
 
-		GameLoop(player, currentSceen);
+		GameLoop(player, enemies, currentSceen);
 	}
 }

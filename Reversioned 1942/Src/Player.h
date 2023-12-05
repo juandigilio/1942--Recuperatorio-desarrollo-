@@ -15,10 +15,10 @@ struct Player
     Vector2 position{};
     Vector2 velocity{};
     Vector2 direction{};
-    float speed = 0.0f;
-    float maxSpeed = 120.0f;
+    float speed = {};
+    float maxSpeed = 250.0f;
     float rotation = 0.0f;
-    float interpolationFactor = 2.0f;
+    float interpolationFactor = 50.0f;
     float targetRotation{};
     float radius{};
     int totalPoints = 0;

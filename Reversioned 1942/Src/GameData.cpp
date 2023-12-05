@@ -15,4 +15,7 @@ namespace GameData
 	float fontSize{};
 	float spacing = 8.0f;
 	float instrucrtionsSpacing = 2.0f;
+
+	double pauseTimer = 0.0f;
+	double pauseDelay = 0.2f;
 }

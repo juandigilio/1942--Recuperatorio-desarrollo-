@@ -1,5 +1,7 @@
 #include "Pause.h"
 
+#include <iostream>
+
 #include "raylib.h"
 
 #include "Menu.h"
@@ -74,11 +76,17 @@ namespace Pause
 			isClicking = false;
 		}
 
+		if (IsKeyPressed(KEY_ESCAPE))
+		{
+			currentSceen = GameSceen::GAME;
+			pauseTimer = GetTime();
+		}
+
 	}
 
-	static void DrawPause(Player player)
+	static void DrawPause(Player player, vector<Enemy> enemies)
 	{
-		GameLoop::DrawGame(player);
+		GameLoop::DrawGame(player, enemies);
 
 		smallWindowPos.x = (screenWidth / 2.0f) - (smallWindow.width / 2.0f);
 		smallWindowPos.y = (screenHeight / 2.0f) - (smallWindow.height / 2.0f);
@@ -99,9 +107,9 @@ namespace Pause
 		DrawTextEx(font, "Press ESC to continue", textPos, fontSize * 0.35f, spacing / 8.0f, RAYWHITE);
 	}
 
-	void ShowPause(Player player, GameSceen& currentSceen)
+	void ShowPause(Player player, vector<Enemy> enemies, GameSceen& currentSceen)
 	{
-		DrawPause(player);
+		DrawPause(player, enemies);
 
 		UpdateMusicStream(menuMusic);
 
