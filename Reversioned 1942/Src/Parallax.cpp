@@ -12,7 +12,9 @@ namespace ParallaxUtilities
 	Texture2D gamePlayBacground;
 	Vector2 layer1Pos{ 0.0f, 0.0f };
 	float layer1Speed = 50.0f;
+
 	bool firstTime = true;
+
 
 	static void LoadParallax()
 	{
