@@ -9,6 +9,7 @@
 #include "Instructions.h"
 #include "Pause.h"
 #include "FinalResults.h"
+#include "GameLoop.h"
 
 
 namespace MenuManager
@@ -50,7 +51,7 @@ namespace MenuManager
 			}
 			case GameSceen::GAME:
 			{
-				//Play(player, asteroids, halfAsteroids, quarterAsteroids, currentSceen);
+				GameLoop::Play(player, currentSceen);
 				break;
 			}
 			case GameSceen::RESULTS:

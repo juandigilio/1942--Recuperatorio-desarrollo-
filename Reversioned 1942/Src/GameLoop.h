@@ -10,7 +10,7 @@ namespace GameLoop
 {
 	void Play(Player& player, GameSceen& gamseSceen);
 
-	//void DrawGame(Player player);
+	void DrawGame(Player player);
 }
 
 

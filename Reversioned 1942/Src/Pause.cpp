@@ -3,7 +3,7 @@
 #include "raylib.h"
 
 #include "Menu.h"
-
+#include "GameLoop.h"
 
 
 using namespace Menu;
@@ -78,7 +78,7 @@ namespace Pause
 
 	static void DrawPause(Player player)
 	{
-		DrawGame(player);
+		GameLoop::DrawGame(player);
 
 		smallWindowPos.x = (screenWidth / 2.0f) - (smallWindow.width / 2.0f);
 		smallWindowPos.y = (screenHeight / 2.0f) - (smallWindow.height / 2.0f);
