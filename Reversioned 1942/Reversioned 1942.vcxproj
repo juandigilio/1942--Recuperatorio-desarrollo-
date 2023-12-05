@@ -37,6 +37,7 @@
     <ClCompile Include="Src\GameData.cpp" />
     <ClCompile Include="Src\GameLoop.cpp" />
     <ClCompile Include="Src\Instructions.cpp" />
+    <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\Menu.cpp" />
     <ClCompile Include="Src\MenuManager.cpp" />
     <ClCompile Include="Src\Pause.cpp" />

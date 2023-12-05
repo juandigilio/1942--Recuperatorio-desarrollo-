@@ -1,9 +1,11 @@
 #include "MenuManager.h"
 
 #include <iostream>
+#include <vector>
 
 #include "GameData.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "Menu.h"
 #include "Credits.h"
 #include "Instructions.h"
@@ -32,8 +34,8 @@ namespace MenuManager
 	void RunGame()
 	{
 		GameSceen currentSceen = GameSceen::MENU;
-
 		Player player;
+		vector<Enemy*> enemies;
 
 		StartUp();
 
@@ -44,42 +46,42 @@ namespace MenuManager
 
 			switch (currentSceen)
 			{
-			case GameSceen::MENU:
-			{
-				Menu::ShowMenu(currentSceen);
-				break;
-			}
-			case GameSceen::GAME:
-			{
-				GameLoop::Play(player, currentSceen);
-				break;
-			}
-			case GameSceen::RESULTS:
-			{
-				FinalResults::ShowResults(player, currentSceen);
-				break;
-			}
-			case GameSceen::PAUSE:
-			{
-				Pause::ShowPause(player, currentSceen);
-				break;
-			}
-			case GameSceen::INSTRUCTIONS:
-			{
-				Instructions::ShowInstructions(currentSceen);
-				break;
-			}
-			case GameSceen::CREDITS:
-			{
-				Credits::ShowCredits(currentSceen);
-				break;
-			}
-			case GameSceen::EXIT:
-			{
-				CloseWindow();
-
-				break;
-			}
+				case GameSceen::MENU:
+				{
+					Menu::ShowMenu(currentSceen);
+					break;
+				}
+				case GameSceen::GAME:
+				{
+					GameLoop::Play(player, currentSceen);
+					break;
+				}
+				case GameSceen::RESULTS:
+				{
+					FinalResults::ShowResults(player, currentSceen);
+					break;
+				}
+				case GameSceen::PAUSE:
+				{
+					Pause::ShowPause(player, currentSceen);
+					break;
+				}
+				case GameSceen::INSTRUCTIONS:
+				{
+					Instructions::ShowInstructions(currentSceen);
+					break;
+				}
+				case GameSceen::CREDITS:
+				{
+					Credits::ShowCredits(currentSceen);
+					break;
+				}
+				case GameSceen::EXIT:
+				{
+					EnemyUtilities::DeleteEnemies(enemies);
+					CloseWindow();
+					break;
+				}
 			}
 
 			EndDrawing();

@@ -4,5 +4,3 @@ namespace MenuManager
 {
 	extern void RunGame();
 }
-
-

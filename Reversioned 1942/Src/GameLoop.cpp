@@ -26,42 +26,41 @@ namespace GameLoop
 		pauseButtonPos.y = 15.0f;
 	}
 
-	static void PlayerCollides(Player& player, GameSceen& gamseSceen)
-	{
-		player.isColliding = true;
-		player.lastCollide = static_cast<float>(GetTime());
-		player.availableLives--;
-		PlaySound(crash);
+	//static void PlayerCollides(Player& player, GameSceen& gamseSceen)
+	//{
+	//	player.isColliding = true;
+	//	player.lastCollide = static_cast<float>(GetTime());
+	//	player.availableLives--;
+	//	PlaySound(crash);
 
-		if (player.totalPoints > highScore)
-		{
-			highScore = player.totalPoints;
-		}
+	//	if (player.totalPoints > highScore)
+	//	{
+	//		highScore = player.totalPoints;
+	//	}
 
-		if (player.availableLives == 0)
-		{
-			gamseSceen = GameSceen::RESULTS;
-		}
-	}
+	//	if (player.availableLives == 0)
+	//	{
+	//		gamseSceen = GameSceen::RESULTS;
+	//	}
+	//}
 
-	static bool CheckCircleCircleCollision(float radius1, float radius2, Vector2 position1, Vector2 position2)
-	{
-		float actualDistance = Vector2Distance(position1, position2);
-		float minDistance = radius1 + radius2;
+	//static bool CheckCircleCircleCollision(float radius1, float radius2, Vector2 position1, Vector2 position2)
+	//{
+	//	float actualDistance = Vector2Distance(position1, position2);
+	//	float minDistance = radius1 + radius2;
 
-		if (actualDistance <= minDistance)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+	//	if (actualDistance <= minDistance)
+	//	{
+	//		return true;
+	//	}
+	//	else
+	//	{
+	//		return false;
+	//	}
+	//}
 
-	static void UpdateAll(Player& player, GameSceen& gamseSceen)
-	{
-		
+	static void UpdateAll(Player& player)
+	{	
 		UpdatePlayer(player);
 		
 		UpdateMusicStream(gameLoopMusic);
@@ -153,7 +152,7 @@ namespace GameLoop
 		{
 			GetPlayerInput(player, currentSceen);
 
-			UpdateAll(player, currentSceen);
+			UpdateAll(player);
 		}
 		else
 		{
