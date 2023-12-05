@@ -20,7 +20,7 @@ namespace EnemyUtilities
         enemy.radius = enemy.texture.width / 2.0f;
         int spawnPosibilities = screenWidth - (enemy.texture.width * 2);
         enemy.position.x = static_cast<float>(rand() % spawnPosibilities);
-        enemy.position.y = 0.0f;
+        enemy.position.y = enemy.texture.height * -1.0f;
         enemy.velocity = { 0.0f, enemy.speed };
         enemy.source = { 0.0f, 0.0f, static_cast<float>(enemy.texture.width), static_cast<float>(enemy.texture.height) };
         enemy.isAlive = true;
