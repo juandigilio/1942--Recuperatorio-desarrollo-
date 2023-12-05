@@ -1,7 +1,5 @@
 #include "GameData.h"
 
-
-
 namespace GameData
 {
 	const int screenWidth = 1024;

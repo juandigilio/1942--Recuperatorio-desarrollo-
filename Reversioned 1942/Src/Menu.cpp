@@ -1,45 +1,44 @@
 #include "Menu.h"
 
-
 namespace Menu
 {
-	extern Texture2D background{};
-	extern Texture2D smallContainer{};
-	extern Texture2D mediumContainer{};
-	extern Texture2D largeContainer{};
-	extern Texture2D play{};
-	extern Texture2D playSelect{};
-	extern Texture2D instructions{};
-	extern Texture2D credits{};
-	extern Texture2D exit{};
+	Texture2D background{};
+	Texture2D smallContainer{};
+	Texture2D mediumContainer{};
+	Texture2D largeContainer{};
+	Texture2D play{};
+	Texture2D playSelect{};
+	Texture2D instructions{};
+	Texture2D credits{};
+	Texture2D exit{};
 
-	extern Texture2D bigWindow{};
-	extern Texture2D smallWindow{};
-	extern Texture2D backButton{};
-	extern Texture2D backButtonAct{};
-	extern Texture2D menuButton{};
-	extern Texture2D menuButtonAct{};
-	extern Texture2D exitButton{};
-	extern Texture2D exitButtonAct{};
+	Texture2D bigWindow{};
+	Texture2D smallWindow{};
+	Texture2D backButton{};
+	Texture2D backButtonAct{};
+	Texture2D menuButton{};
+	Texture2D menuButtonAct{};
+	Texture2D exitButton{};
+	Texture2D exitButtonAct{};
 
-	extern Sound click{};
-	extern Sound clickPressed{};
+	Sound click{};
+	Sound clickPressed{};
 
-	extern Vector2 playPos{};
-	extern Vector2 playPosContainer{};
-	extern Vector2 instructionsPos{};
-	extern Vector2 instructionsPosContainer{};
-	extern Vector2 creditsPos{};
-	extern Vector2 creditsPosContainer{};
-	extern Vector2 exitPos{};
-	extern Vector2 exitPosContainer{};
-	extern Vector2 bigWindowPos{};
-	extern Vector2 smallWindowPos{};
-	extern Vector2 backButtonPos{};
-	extern Vector2 menuButtonPos{};
-	extern Vector2 exitButtonPos{};
+	Vector2 playPos{};
+	Vector2 playPosContainer{};
+	Vector2 instructionsPos{};
+	Vector2 instructionsPosContainer{};
+	Vector2 creditsPos{};
+	Vector2 creditsPosContainer{};
+	Vector2 exitPos{};
+	Vector2 exitPosContainer{};
+	Vector2 bigWindowPos{};
+	Vector2 smallWindowPos{};
+	Vector2 backButtonPos{};
+	Vector2 menuButtonPos{};
+	Vector2 exitButtonPos{};
 
-	extern bool isClicking = false;
+	bool isClicking = false;
 
 	void InitMenu()
 	{
