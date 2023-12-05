@@ -47,5 +47,7 @@ namespace Menu
 
 	extern bool isClicking;
 
-	void ShowMenu(GameSceen& currentSceen);
+	extern void ShowMenu(GameSceen& currentSceen);
+
+	extern void InitMenu();
 }

@@ -41,7 +41,7 @@ namespace Menu
 
 	extern bool isClicking = false;
 
-	static void InitMenu()
+	void InitMenu()
 	{
 		background = LoadTexture("Assets/Images/Menu/background.png");
 		smallContainer = LoadTexture("Assets/Images/Menu/smallContainer.png");
