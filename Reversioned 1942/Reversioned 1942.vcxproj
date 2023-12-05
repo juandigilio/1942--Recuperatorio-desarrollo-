@@ -28,6 +28,7 @@
     <ClInclude Include="Src\Instructions.h" />
     <ClInclude Include="Src\Menu.h" />
     <ClInclude Include="Src\MenuManager.h" />
+    <ClInclude Include="Src\Parallax.h" />
     <ClInclude Include="Src\Pause.h" />
     <ClInclude Include="Src\Player.h" />
   </ItemGroup>
@@ -42,6 +43,7 @@
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\Menu.cpp" />
     <ClCompile Include="Src\MenuManager.cpp" />
+    <ClCompile Include="Src\Parallax.cpp" />
     <ClCompile Include="Src\Pause.cpp" />
     <ClCompile Include="Src\Player.cpp" />
   </ItemGroup>

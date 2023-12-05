@@ -3,10 +3,12 @@
 #include "raymath.h"
 
 #include "Bullet.h"
+#include "Parallax.h"
 
 
 using namespace PlayerUtilities;
 using namespace EnemyUtilities;
+using namespace ParallaxUtilities;
 
 namespace GameLoop
 {
@@ -14,12 +16,11 @@ namespace GameLoop
 
 	Texture2D pauseButton{};
 	Texture2D pauseButtonAct{};
-	Texture2D gamePlayBacground{};
+	
 	Vector2 pauseButtonPos{};
 
 	static void LoadGame()
 	{
-		gamePlayBacground = LoadTexture("Assets/Images/background.png");
 		pauseButton = LoadTexture("Assets/Images/Menu/pauseBtn.png");
 		pauseButtonAct = LoadTexture("Assets/Images/Menu/pauseBtnAct.png");
 
@@ -86,6 +87,8 @@ namespace GameLoop
 
 	static void UpdateAll(Player& player, vector<Enemy>& enemies, GameSceen& currentSceen)
 	{	
+		UpdateParallax();
+
 		UpdatePlayer(player);
 
 		UpdateEnemies(enemies);
@@ -171,9 +174,12 @@ namespace GameLoop
 
 	void DrawGame(Player player, vector<Enemy> enemies)
 	{
-		DrawTextureV(gamePlayBacground, { 0, 0 }, RAYWHITE);
+		DrawParallax();
+
 		DrawPlayer(player);
+
 		DrawEnemies(enemies);
+
 		DrawHUD(player);
 	}
 
