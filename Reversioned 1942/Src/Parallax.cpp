@@ -7,19 +7,9 @@ using namespace GameData;
 
 namespace ParallaxUtilities
 {
-	const int layersQnty = 3;
-
-	struct Parallax
-	{
-		Texture2D texture;
-		Vector2 position{ 0.0f, 0.0f };
-		float speed;
-	};
-
 	Parallax layers[layersQnty];
 
 	bool firstTime = true;
-
 
 	static void LoadParallax()
 	{
@@ -57,6 +47,14 @@ namespace ParallaxUtilities
 			DrawTextureV(layers[i].texture, layers[i].position, RAYWHITE);
 			DrawTextureV(layers[i].texture, { layers[i].position.x, layers[i].position.y - layers[i].texture.height }, RAYWHITE);
 		}
+	}
+
+	void ResetParallax()
+	{
+		layers[0].speed = 20.0f;
+		layers[1].speed = 35.0f;
+		layers[2].speed = 70.0f;
+
 	}
 
 	void UnloadParallaxTextures()

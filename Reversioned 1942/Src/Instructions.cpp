@@ -40,6 +40,8 @@ namespace Instructions
 
 	static void DrawInstrucions()
 	{
+		float instructionsSize = fontSize / 3.0f;
+
 		bigWindowPos.x = (screenWidth / 2.0f) - (bigWindow.width / 2.0f);
 		bigWindowPos.y = (screenHeight / 2.0f) - (bigWindow.height / 2.0f);
 
@@ -53,33 +55,33 @@ namespace Instructions
 		textPos.y = (screenHeight / 6) - fontSize + 10;
 		DrawTextEx(font, "INSTRUCTIONS", textPos, fontSize * 0.85f, spacing / 2.0f, RAYWHITE);
 
-		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "Press left click once to shoot and get pressed", fontSize / 4.0f, spacing / 4.0f).x / 2.0f;
+		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "Press left mouse button to shoot", instructionsSize, spacing / 4.0f).x / 2.0f;
 		textPos.y = (screenHeight / 5) + (fontSize)-20;
-		DrawTextEx(font, "Press once left click to shoot and get pressed", textPos, fontSize / 4.0f, spacing / 4.0f, RAYWHITE);
+		DrawTextEx(font, "Press left mouse button to shoot", textPos, instructionsSize, spacing / 4.0f, RAYWHITE);
 
-		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "right click to acelerate, ship will allways follow", fontSize / 4.0f, spacing / 4.0f).x / 2.0f;
+		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "where the cursor is positioned", instructionsSize, spacing / 4.0f).x / 2.0f;
 		textPos.y += 40;
-		DrawTextEx(font, "right click to acelerate, ship will allways follow", textPos, fontSize / 4.0f, spacing / 4.0f, RAYWHITE);
+		DrawTextEx(font, "where the cursor is positioned", textPos, instructionsSize, spacing / 4.0f, RAYWHITE);
 
-		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "mouse arrow. Destroy as many asteroids as possible", fontSize / 4.0f, spacing / 4.0f).x / 2.0f;
+		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "Use keyboard arrows to move", instructionsSize, spacing / 4.0f).x / 2.0f;
+		textPos.y += 70;
+		DrawTextEx(font, "Use keyboard arrows to move", textPos, instructionsSize, spacing / 4.0f, RAYWHITE);
+
+		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "if you crash you lose!", instructionsSize, spacing / 4.0f).x / 2.0f;
 		textPos.y += 40;
-		DrawTextEx(font, "mouse arrow. Destroy as many asteroids as possible", textPos, fontSize / 4.0f, spacing / 4.0f, RAYWHITE);
+		DrawTextEx(font, "if you crash you lose!", textPos, instructionsSize, spacing / 4.0f, RAYWHITE);
 
-		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "and set the new record! Game will end when you", fontSize / 4.0f, spacing / 4.0f).x / 2.0f;
+		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "Destroy as many UFOS as possible and", instructionsSize, spacing / 4.0f).x / 2.0f;
+		textPos.y += 70;
+		DrawTextEx(font, "Destroy as many UFOS as possible and", textPos, instructionsSize, spacing / 4.0f, RAYWHITE);
+
+		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "don't let them take over our planet!", instructionsSize, spacing / 4.0f).x / 2.0f;
 		textPos.y += 40;
-		DrawTextEx(font, "and set the new record! Game will end when you", textPos, fontSize / 4.0f, spacing / 4.0f, RAYWHITE);
-
-		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "loose all your lives, but there is not a win", fontSize / 4.0f, spacing / 4.0f).x / 2.0f;
-		textPos.y += 40;
-		DrawTextEx(font, "loose all your lives, but there is not a win", textPos, fontSize / 4.0f, spacing / 4.0f, RAYWHITE);
-
-		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "condition, it's just a highest score comp.", fontSize / 4.0f, spacing / 4.0f).x / 2.0f;
-		textPos.y += 40;
-		DrawTextEx(font, "condition, it's just a highest score comp.", textPos, fontSize / 4.0f, spacing / 4.0f, RAYWHITE);
-
-		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "(Press ESC to pause)", fontSize / 3.0f, spacing / 3.0f).x / 2.0f;
+		DrawTextEx(font, "don't let them take over our planet!", textPos, instructionsSize, spacing / 4.0f, RAYWHITE);
+		
+		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "(ESC is always the answer)", fontSize / 3.0f, spacing / 3.0f).x / 2.0f;
 		textPos.y += 160;
-		DrawTextEx(font, "(Press ESC to pause)", textPos, fontSize / 3.0f, spacing / 3.0f, RAYWHITE);
+		DrawTextEx(font, "(ESC is always the answer)", textPos, fontSize / 3.0f, spacing / 3.0f, RAYWHITE);
 	}
 
 	void ShowInstructions(GameSceen& currentSceen)

@@ -11,7 +11,6 @@ using namespace GameData;
 
 namespace EnemyUtilities
 {
-    static const double spawnRate = 1.0f;
     static double lastDrop = 0.0f;
 
     static void LoadEnemy(Enemy& enemy)
@@ -24,8 +23,7 @@ namespace EnemyUtilities
         enemy.position.x = static_cast<float>(rand() % spawnPosibilities);
         enemy.position.y = enemy.texture.height * -1.0f;
 
-        enemy.speed = 200.f;
-        enemy.velocity = { 0.0f, enemy.speed };
+        enemy.velocity = { 0.0f, enemySpeedHardnes };
 
         enemy.source = { 0.0f, 0.0f, static_cast<float>(enemy.texture.width / 2.0f), static_cast<float>(enemy.texture.height) };
         enemy.rotation = 0.0f;
@@ -42,7 +40,7 @@ namespace EnemyUtilities
     {
         for (auto& enemy : enemies)
         {
-            enemy.position.y += enemy.velocity.y * GetFrameTime();
+            enemy.position.y += enemySpeedHardnes * GetFrameTime();
             enemy.rotation += enemy.rotationSpeed * GetFrameTime();
         }
     }
@@ -51,7 +49,7 @@ namespace EnemyUtilities
     {
         double elapsedTime = GetTime() - lastDrop;
        
-        if (elapsedTime > spawnRate)
+        if (elapsedTime > spawnRateHardnes)
         {
             Enemy enemy;
             LoadEnemy(enemy);

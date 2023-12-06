@@ -11,10 +11,9 @@ struct Enemy
     Vector2 position{};
     Vector2 velocity{};
     Vector2 direction{};
-    float speed{};
+    float speedY{};
     float rotation{};
     float rotationSpeed{};
-    //float interpolationFactor = 2.0f;
     float targetRotation{};
     float radius{};
     Texture2D texture{};

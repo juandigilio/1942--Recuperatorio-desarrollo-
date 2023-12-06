@@ -7,6 +7,10 @@ namespace GameData
 	Vector2 screenCenter = { screenWidth / 2, screenHeight / 2 };
 	bool loading = true;
 	int highScore = 0;
+	double spawnRateBase  = 1.4f;
+	double spawnRateHardnes = spawnRateBase;
+	float enemyBaseSpeed  = 200.0f;
+	float enemySpeedHardnes = enemyBaseSpeed;
 
 	Music menuMusic{};
 	Music gameLoopMusic{};

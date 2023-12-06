@@ -65,7 +65,7 @@ namespace GameLoop
 					if (actualDistance <= minDistance)
 					{
 						object.isAlive = false;
-						player.totalPoints += 50;
+						player.totalPoints += 100;
 						player.bullets[i].isAlive = false;
 					}
 				}
@@ -109,6 +109,9 @@ namespace GameLoop
 		player.frame = 0;
 		player.explosionFrame = 0;
 		player.lastFrame = 0.0f;
+
+		enemySpeedHardnes = enemyBaseSpeed;
+		spawnRateHardnes = spawnRateBase;
 
 		for (int i = 0; i < maxBulletsQnty; i++)
 		{

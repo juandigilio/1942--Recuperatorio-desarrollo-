@@ -4,6 +4,8 @@
 
 #include "raymath.h"
 
+#include "Parallax.h"
+
 
 using namespace std;
 
@@ -154,6 +156,24 @@ namespace PlayerUtilities
             PlaySound(player.thousand);
 
             player.thousandCouner += 1000;
+
+            spawnRateHardnes -= 0.1f;
+            enemySpeedHardnes += 60.0f;
+
+            for (int i = 0; i < ParallaxUtilities::layersQnty; i++)
+            {
+                ParallaxUtilities::layers[i].speed *= 1.4f;
+            }
+
+            if (spawnRateHardnes < 0.2f)
+            {
+                spawnRateHardnes = 0.0f;
+            }
+
+            if (enemySpeedHardnes > 2000.0f)
+            {
+                enemySpeedHardnes = 2000.0f;
+            }
         }
 
         MovePlayer(player);
