@@ -66,9 +66,9 @@ namespace PlayerUtilities
         player.position.x += player.velocity.x * GetFrameTime();
         player.position.y += player.velocity.y * GetFrameTime();
 
-        if (player.position.x > screenWidth - player.texture.width)
+        if (player.position.x > screenWidth - player.width)
         {
-            player.position.x = static_cast<float>(screenWidth - player.texture.width);
+            player.position.x = static_cast<float>(screenWidth - player.width);
         }
         else if (player.position.x < 0.0f)
         {

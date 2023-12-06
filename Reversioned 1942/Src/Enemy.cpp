@@ -16,23 +16,29 @@ namespace EnemyUtilities
 
     static void LoadEnemy(Enemy& enemy)
     {
-        enemy.texture = LoadTexture("Assets/Images/bigAsteroid.png");
-        enemy.radius = enemy.texture.width / 2.0f;
-        int spawnPosibilities = screenWidth - (enemy.texture.width * 2);
+        enemy.texture = LoadTexture("Assets/Images/enemy.png");
+        enemy.radius = enemy.texture.width / 4.0f;
+        int spawnPosibilities = screenWidth - (enemy.texture.width / 2);
         enemy.position.x = static_cast<float>(rand() % spawnPosibilities);
         enemy.position.y = enemy.texture.height * -1.0f;
+        enemy.speed = 200.f;
         enemy.velocity = { 0.0f, enemy.speed };
-        enemy.source = { 0.0f, 0.0f, static_cast<float>(enemy.texture.width), static_cast<float>(enemy.texture.height) };
+        enemy.source = { 0.0f, 0.0f, static_cast<float>(enemy.texture.width / 2.0f), static_cast<float>(enemy.texture.height) };
         enemy.isAlive = true;
+        enemy.rotation = 0.0f;
+        enemy.rotationSpeed = 100.0f;
+        enemy.lastFrame = 0.0f;
+        enemy.frame = 0;
 
         lastDrop = GetTime();
     }
 
     static void MoveEnemies(vector<Enemy>& enemies)
     {
-        for (auto& object : enemies)
+        for (auto& enemy : enemies)
         {
-            object.position.y += object.velocity.y * GetFrameTime();
+            enemy.position.y += enemy.velocity.y * GetFrameTime();
+            enemy.rotation += enemy.rotationSpeed * GetFrameTime();
         }
     }
 
@@ -53,12 +59,41 @@ namespace EnemyUtilities
 
     void DrawEnemies(vector<Enemy>& enemies)
     {
-        for (auto& object : enemies)
-        {
-            Rectangle dest = { object.GetCenter().x, object.GetCenter().y, static_cast<float>(object.texture.width), static_cast<float>(object.texture.height) };
-            Vector2 origin = { static_cast<float>(object.texture.width / 2.0f), static_cast<float>(object.texture.height / 2.0f) };
 
-            DrawTexturePro(object.texture, object.source, dest, origin, object.rotation + 90.0f, RAYWHITE);
+        for (auto& enemy : enemies)
+        {
+            Rectangle dest = { enemy.GetCenter().x, enemy.GetCenter().y, enemy.texture.width / 2.0f, static_cast<float>(enemy.texture.height) };
+            Vector2 origin = { enemy.texture.width / 4.0f, enemy.texture.height / 2.0f };
+
+            switch (enemy.frame)
+            {
+            case 0:
+            {
+                enemy.source = { 0.0f, 0.0f, enemy.texture.width / 2.0f, static_cast<float>(enemy.texture.height) };
+                break;
+            }
+            case 1:
+            {
+                enemy.source = { (enemy.texture.width / 2.0f), 0.0f, enemy.texture.width / 2.0f, static_cast<float>(enemy.texture.height) };
+                break;
+            }
+            }
+
+            DrawTexturePro(enemy.texture, enemy.source, dest, origin, enemy.rotation + 90.0f, RAYWHITE);
+
+            double elapsedTime = GetTime() - enemy.lastFrame;
+
+            if (elapsedTime > 0.4f)
+            {
+                enemy.frame++;
+
+                enemy.lastFrame = GetTime();
+
+                if (enemy.frame > 1)
+                {
+                    enemy.frame = 0;
+                }
+            }
         }
     }
 

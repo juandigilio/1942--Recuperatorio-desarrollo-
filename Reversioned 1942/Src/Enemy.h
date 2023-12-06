@@ -11,18 +11,21 @@ struct Enemy
     Vector2 position{};
     Vector2 velocity{};
     Vector2 direction{};
-    float speed = 200.0f;
-    float rotation = 0.0f;
-    float interpolationFactor = 2.0f;
+    float speed{};
+    float rotation{};
+    float rotationSpeed{};
+    //float interpolationFactor = 2.0f;
     float targetRotation{};
     float radius{};
     Texture2D texture{};
     Rectangle source{};
     bool isAlive{};
+    double lastFrame{};
+    int frame{};
 
     Vector2 GetCenter()
     {
-        return { position.x + (texture.width / 2), position.y + (texture.height / 2) };
+        return { position.x + (radius), position.y + (radius) };
     }
 };
 
