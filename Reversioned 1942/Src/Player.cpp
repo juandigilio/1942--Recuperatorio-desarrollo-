@@ -16,11 +16,14 @@ namespace PlayerUtilities
     static const float textureHeight = 150.0f;
     static const float explosionTextureWidth = 150.0f;
     static const float explosionTextureHeight = 150.0f;
+    static const float turretWidth = 25.0f;
+    static const float turretHeight = 63.0f;
 
 	void LoadPlayer(Player& player)
 	{
         player.texture = LoadTexture("Assets/Images/ship.png");
         player.explosionTexture = LoadTexture("Assets/Images/shipExplosion.png");
+        player.turretTexture = LoadTexture("Assets/Images/turret.png");
         player.position.x = screenCenter.x - player.texture.width / 2;
         player.position.y = static_cast<float>(screenHeight - player.texture.height);
         player.radius = textureWidth / 2.0f;
@@ -28,11 +31,14 @@ namespace PlayerUtilities
         player.height = textureHeight;
         player.source = { 0, 0, player.width, player.height };
         player.explosionSource = { 0, 0, explosionTextureWidth, explosionTextureHeight };
+        player.turretSource = { 0, 0, turretWidth, turretHeight };
         player.totalPoints = 0;
         player.availableLives = 3;
         player.frame = 0;
         player.explosionFrame = 0;
+        player.turretFrame = 0;
         player.lastFrame = 0.0f;
+        player.lastTurretFrame = 0.0f;
         
         player.shoot = LoadSound("Assets/Sounds/shoot.wav");
         player.thousand = LoadSound("Assets/Sounds/crash.wav");
@@ -48,11 +54,20 @@ namespace PlayerUtilities
 
     static void Shoot(Player& player)
     {
+        const float turretLength = 40.0f;
+
         for (int i = 0; i < maxBulletsQnty; i++)
         {
             if (!player.bullets[i].isAlive)
             {
-                player.bullets[i].position = player.GetCenter();
+                float angle = (player.rotation - 90.0f) * (PI / 180.0f);
+
+                float x = player.GetCenter().x + turretLength * cos(angle);
+                float y = player.GetCenter().y + turretLength * sin(angle);
+
+                player.bullets[i].position.x = x;
+                player.bullets[i].position.y = y;
+                //player.bullets[i].position = player.GetCenter();
                 player.bullets[i].rotation = player.rotation;
                 player.bullets[i].isAlive = true;
 
@@ -139,6 +154,7 @@ namespace PlayerUtilities
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
             Shoot(player);
+            player.isShooting = true;
         }
 
         double elapsedTime = GetTime() - pauseTimer;
@@ -184,13 +200,65 @@ namespace PlayerUtilities
         }
 	}
 
+   static  void DrawTurret(Player& player)
+    {
+        const float rotationCenterX = 12.5f;
+        const float rotationCenterY = turretHeight - 12.5f;
+
+        Vector2 origin = { rotationCenterX, rotationCenterY };
+        Rectangle dest = { player.GetCenter().x, player.GetCenter().y, turretWidth, turretHeight };
+
+        if (player.isShooting)
+        {
+            switch (player.turretFrame)
+            {
+            case 0:
+            {
+                player.turretSource = { turretWidth, 0, turretWidth, turretHeight };
+                break;
+            }
+            case 1:
+            {
+                player.turretSource = { turretWidth * 2, 0, turretWidth, turretHeight };
+                break;
+            }
+            case 2:
+            {
+                player.turretSource = { turretWidth * 3, 0, turretWidth, turretHeight };
+                break;
+            }
+            case 3:
+            {
+                player.turretSource = { turretWidth * 4, 0, turretWidth, turretHeight };
+                break;
+            }
+            }
+
+            double elapsedTime = GetTime() - player.lastTurretFrame;
+
+            if (elapsedTime > 0.07f)
+            {
+                player.turretFrame++;
+
+                player.lastTurretFrame = GetTime();
+
+                if (player.turretFrame > 3)
+                {
+                    player.turretFrame = 0;
+                    player.isShooting = false;
+                }
+            }
+        }
+        else
+        {   
+            player.turretSource = { 0, 0, turretWidth, turretHeight };
+        }
+        
+        DrawTexturePro(player.turretTexture, player.turretSource, dest, origin, player.rotation, RAYWHITE);
+    }
+
 	void DrawPlayer(Player& player)
 	{
-        for (int i = 0; i < maxBulletsQnty; i++)
-        {
-            BulletUtilities::DrawBullet(player.bullets[i]);
-        }
-
         const float rotationCenterX = 50.0f;
         const float rotationCenterY = 50.0f;
         Vector2 origin = { rotationCenterX, rotationCenterY };
@@ -243,11 +311,18 @@ namespace PlayerUtilities
         }
         else if (!player.isColliding)
         {
-            Rectangle dest = { player.GetCenter().x, player.GetCenter().y, static_cast<float>(player.width), static_cast<float>(player.height) };
-            player.source = { 0, 0, static_cast<float>(player.width), static_cast<float>(player.height) };
+            Rectangle dest = { player.GetCenter().x, player.GetCenter().y, player.width, player.height };
+            player.source = { 0, 0, player.width, player.height };
 
             DrawTexturePro(player.texture, player.source, dest, origin, 0.0f, RAYWHITE);
         }
+
+        for (int i = 0; i < maxBulletsQnty; i++)
+        {
+            BulletUtilities::DrawBullet(player.bullets[i]);
+        }
+
+        DrawTurret(player);
 	}
 
     bool ShowExplosion(Player& player)

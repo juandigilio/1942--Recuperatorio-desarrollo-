@@ -110,6 +110,8 @@ namespace GameLoop
 		player.explosionFrame = 0;
 		player.lastFrame = 0.0f;
 
+		ResetParallax();
+
 		enemySpeedHardnes = enemyBaseSpeed;
 		spawnRateHardnes = spawnRateBase;
 

@@ -23,7 +23,7 @@ namespace MenuManager
 
 		SetConfigFlags(FLAG_MSAA_4X_HINT);
 
-		InitWindow(screenWidth, screenHeight, "9402");
+		InitWindow(screenWidth, screenHeight, "2042");
 
 		InitAudioDevice();
 

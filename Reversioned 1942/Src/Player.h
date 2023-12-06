@@ -25,14 +25,19 @@ struct Player
     Rectangle source{};
     Texture2D explosionTexture{};
     Rectangle explosionSource{};
+    Texture2D turretTexture{};
+    Rectangle turretSource{};
     float radius{};
     float width{};
     float height{};
     int frame{};
     int explosionFrame{};
+    int turretFrame{};
     double lastFrame{};
+    double lastTurretFrame{};
     bool isSpeeding = false;
     bool isColliding = false;
+    bool isShooting = false;
     float lastCollide = 0.0f;
 
     int totalPoints = 0;
