@@ -50,4 +50,6 @@ namespace Menu
 	extern void ShowMenu(GameSceen& currentSceen);
 
 	extern void InitMenu();
+
+	extern void UnloadMenuTextures();
 }

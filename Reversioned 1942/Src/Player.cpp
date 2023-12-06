@@ -12,19 +12,24 @@ namespace PlayerUtilities
 {
     static const float textureWidth = 100.0f;
     static const float textureHeight = 150.0f;
+    static const float explosionTextureWidth = 150.0f;
+    static const float explosionTextureHeight = 150.0f;
 
 	void LoadPlayer(Player& player)
 	{
         player.texture = LoadTexture("Assets/Images/ship.png");
+        player.explosionTexture = LoadTexture("Assets/Images/shipExplosion.png");
         player.position.x = screenCenter.x - player.texture.width / 2;
         player.position.y = static_cast<float>(screenHeight - player.texture.height);
         player.radius = textureWidth / 2.0f;
         player.width = textureWidth;
         player.height = textureHeight;
         player.source = { 0, 0, player.width, player.height };
+        player.explosionSource = { 0, 0, explosionTextureWidth, explosionTextureHeight };
         player.totalPoints = 0;
         player.availableLives = 3;
         player.frame = 0;
+        player.explosionFrame = 0;
         player.lastFrame = 0.0f;
         
         player.shoot = LoadSound("Assets/Sounds/shoot.wav");
@@ -34,7 +39,7 @@ namespace PlayerUtilities
         {
             player.bullets[i].texture = LoadTexture("Assets/Images/bullet.png");
             player.bullets[i].isAlive = false;
-            player.bullets[i].radius = player.bullets[i].texture.width / 2.0f;
+            player.bullets[i].radius = player.bullets[i].texture.height / 2.0f;
             player.bullets[i].source = { 0, 0, static_cast<float>(player.bullets[i].texture.width), static_cast<float>(player.bullets[i].texture.height) };
         }
 	}
@@ -86,6 +91,8 @@ namespace PlayerUtilities
 
 	void GetPlayerInput(Player& player, GameSceen& currentSceen)
 	{
+        SetExitKey(KEY_Q);
+
         double y = static_cast<double>(GetMousePosition().y - static_cast<double>(player.height / 2.0f)) - player.position.y;
         double x = static_cast<double>(GetMousePosition().x - static_cast<double>(player.width / 2.0f)) - player.position.x;
 
@@ -214,7 +221,7 @@ namespace PlayerUtilities
                 }
             }
         }
-        else
+        else if (!player.isColliding)
         {
             Rectangle dest = { player.GetCenter().x, player.GetCenter().y, static_cast<float>(player.width), static_cast<float>(player.height) };
             player.source = { 0, 0, static_cast<float>(player.width), static_cast<float>(player.height) };
@@ -222,4 +229,95 @@ namespace PlayerUtilities
             DrawTexturePro(player.texture, player.source, dest, origin, 0.0f, RAYWHITE);
         }
 	}
+
+    bool ShowExplosion(Player& player)
+    {
+        const float rotationCenterX = explosionTextureWidth / 2.0f;
+        const float rotationCenterY = explosionTextureHeight / 2.0f;
+
+        float centerX = player.position.x + explosionTextureWidth / 2.0f;
+        float centerY = player.position.y + explosionTextureHeight / 2.0f;
+
+        Vector2 origin = { rotationCenterX, rotationCenterY };
+        Rectangle dest = { centerX, centerY, explosionTextureWidth, explosionTextureHeight };
+
+        switch (player.explosionFrame)
+        {
+            case 0:
+            {
+                player.source = { 0, 0, explosionTextureWidth, explosionTextureHeight };
+                DrawTexturePro(player.explosionTexture, player.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 1:
+            {
+                player.source = { explosionTextureWidth, 0, explosionTextureWidth, explosionTextureHeight };
+                DrawTexturePro(player.explosionTexture, player.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 2:
+            {
+                player.source = { explosionTextureWidth * 2, 0, explosionTextureWidth, explosionTextureHeight };
+                DrawTexturePro(player.explosionTexture, player.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 3:
+            {
+                player.source = { explosionTextureWidth * 3, 0, explosionTextureWidth, explosionTextureHeight };
+                DrawTexturePro(player.explosionTexture, player.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 4:
+            {
+                player.source = { explosionTextureWidth * 4, 0, explosionTextureWidth, explosionTextureHeight };
+                DrawTexturePro(player.explosionTexture, player.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 5:
+            {
+                player.source = { explosionTextureWidth * 5, 0, explosionTextureWidth, explosionTextureHeight };
+                DrawTexturePro(player.explosionTexture, player.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 6:
+            {
+                player.source = { explosionTextureWidth * 6, 0, explosionTextureWidth, explosionTextureHeight };
+                DrawTexturePro(player.explosionTexture, player.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 7:
+            {
+                player.source = { explosionTextureWidth * 7, 0, explosionTextureWidth, explosionTextureHeight };
+                DrawTexturePro(player.explosionTexture, player.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+        }
+
+        double elapsedTime = GetTime() - player.lastFrame;
+
+        if (elapsedTime > 0.09f)
+        {
+            player.explosionFrame++;
+            player.lastFrame = GetTime();
+        }
+
+        if (player.explosionFrame > 7)
+        {
+            player.isColliding = false;
+            return true;
+        }
+
+        return false;
+    }
+
+    void UnloadPlayerTextures(Player& player)
+    {
+        for (int i = 0; i < maxBulletsQnty; i++)
+        {
+            UnloadTexture(player.bullets[i].texture);
+        }
+
+        UnloadTexture(player.texture);
+        UnloadTexture(player.explosionTexture);
+    }
 }

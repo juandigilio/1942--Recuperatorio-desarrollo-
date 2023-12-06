@@ -12,6 +12,8 @@ namespace GameLoop
 	void Play(Player& player, vector<Enemy>& enemies, GameSceen& gamseSceen);
 
 	void DrawGame(Player& player, vector<Enemy>& enemies);
+
+	void UnloadGameLoopTextures();
 }
 
 

@@ -17,6 +17,8 @@ namespace Pause
 		int mouseX = GetMouseX();
 		int mouseY = GetMouseY();
 
+		SetExitKey(KEY_Q);
+
 		if ((mouseX > backButtonPos.x && mouseX < backButtonPos.x + backButton.width) && (mouseY > backButtonPos.y && mouseY < backButtonPos.y + backButton.height))
 		{
 			DrawTextureV(backButtonAct, backButtonPos, WHITE);

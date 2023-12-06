@@ -101,6 +101,8 @@ namespace Menu
 
 	static void GetInput(GameSceen& currentSceen)
 	{
+		SetExitKey(KEY_ESCAPE);
+
 		int mouseX = GetMouseX();
 		int mouseY = GetMouseY();
 
@@ -205,5 +207,29 @@ namespace Menu
 		UpdateMusicStream(menuMusic);
 
 		GetInput(currentSceen);
+	}
+
+	void UnloadMenuTextures()
+	{
+		UnloadTexture(background);
+		UnloadTexture(smallContainer);
+		UnloadTexture(mediumContainer);
+		UnloadTexture(largeContainer);
+		UnloadTexture(bigWindow);
+		UnloadTexture(smallWindow);
+		UnloadTexture(backButton);
+		UnloadTexture(backButtonAct);
+		UnloadTexture(menuButton);
+		UnloadTexture(menuButtonAct);
+		UnloadTexture(exitButton);
+		UnloadTexture(exitButtonAct);
+
+		UnloadMusicStream(menuMusic);
+		UnloadMusicStream(gameLoopMusic);
+
+		UnloadSound(click);
+		UnloadSound(clickPressed);
+
+		UnloadFont(font);
 	}
 }

@@ -12,6 +12,7 @@
 #include "Pause.h"
 #include "FinalResults.h"
 #include "GameLoop.h"
+#include "Parallax.h"
 
 
 namespace MenuManager
@@ -22,13 +23,21 @@ namespace MenuManager
 
 		SetConfigFlags(FLAG_MSAA_4X_HINT);
 
-		InitWindow(screenWidth, screenHeight, "After-Roids");
+		InitWindow(screenWidth, screenHeight, "9402");
 
 		InitAudioDevice();
 
 		Menu::InitMenu();
 
 		PlayMusicStream(menuMusic);
+	}
+
+	static void UnloadTextures(Player& player)
+	{
+		GameLoop::UnloadGameLoopTextures();
+		Menu::UnloadMenuTextures();
+		ParallaxUtilities::UnloadParallaxTextures();
+		PlayerUtilities::UnloadPlayerTextures(player);
 	}
 
 	void RunGame()
@@ -39,7 +48,7 @@ namespace MenuManager
 
 		StartUp();
 
-		while (currentSceen != GameSceen::EXIT)
+		while (currentSceen != GameSceen::EXIT && !WindowShouldClose())
 		{
 			BeginDrawing();
 			ClearBackground(RAYWHITE);
@@ -86,5 +95,7 @@ namespace MenuManager
 
 			EndDrawing();
 		}
+
+		UnloadTextures(player);
 	}
 }

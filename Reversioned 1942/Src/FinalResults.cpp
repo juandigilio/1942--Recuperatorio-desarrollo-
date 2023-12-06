@@ -36,14 +36,21 @@ namespace FinalResults
 		DrawTextEx(font, TextFormat("%01i", highScore), textPos, fontSize * 0.4f, spacing / 8.0f, RAYWHITE);
 	}
 
-	static void GetInput(GameSceen& currentSceen)
+	static void GetInput(Player player, GameSceen& currentSceen)
 	{
+		SetExitKey(KEY_Q);
+
 		int mouseX = GetMouseX();
 		int mouseY = GetMouseY();
 
 		if (IsKeyPressed(KEY_ESCAPE))
 		{
 			currentSceen = GameSceen::MENU;
+
+			if (player.totalPoints > highScore)
+			{
+				highScore = player.totalPoints;
+			}
 		}
 		else if ((mouseX > backButtonPos.x && mouseX < backButtonPos.x + backButton.width) && (mouseY > backButtonPos.y && mouseY < backButtonPos.y + backButton.height))
 		{
@@ -60,6 +67,11 @@ namespace FinalResults
 			{
 				PlaySound(clickPressed);
 				currentSceen = GameSceen::MENU;
+
+				if (player.totalPoints > highScore)
+				{
+					highScore = player.totalPoints;
+				}
 			}
 		}
 	}
@@ -70,6 +82,6 @@ namespace FinalResults
 
 		UpdateMusicStream(menuMusic);
 
-		GetInput(currentSceen);
+		GetInput(player, currentSceen);
 	}
 }

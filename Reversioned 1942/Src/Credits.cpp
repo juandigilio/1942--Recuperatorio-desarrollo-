@@ -73,6 +73,8 @@ namespace Credits
 
 	static void GetCreditsInput(GameSceen& currentSceen)
 	{
+		SetExitKey(KEY_Q);
+
 		int mouseX = GetMouseX();
 		int mouseY = GetMouseY();
 
@@ -130,6 +132,11 @@ namespace Credits
 		else
 		{
 			isClicking = false;
+		}
+
+		if (IsKeyPressed(KEY_ESCAPE))
+		{
+			currentSceen = GameSceen::MENU;
 		}
 	}
 

@@ -17,18 +17,23 @@ namespace EnemyUtilities
     static void LoadEnemy(Enemy& enemy)
     {
         enemy.texture = LoadTexture("Assets/Images/enemy.png");
-        enemy.radius = enemy.texture.width / 4.0f;
+
         int spawnPosibilities = screenWidth - (enemy.texture.width / 2);
+
+        enemy.radius = enemy.texture.width / 4.0f;
         enemy.position.x = static_cast<float>(rand() % spawnPosibilities);
         enemy.position.y = enemy.texture.height * -1.0f;
+
         enemy.speed = 200.f;
         enemy.velocity = { 0.0f, enemy.speed };
+
         enemy.source = { 0.0f, 0.0f, static_cast<float>(enemy.texture.width / 2.0f), static_cast<float>(enemy.texture.height) };
-        enemy.isAlive = true;
         enemy.rotation = 0.0f;
-        enemy.rotationSpeed = 100.0f;
-        enemy.lastFrame = 0.0f;
+        enemy.rotationSpeed = 75.0f;
         enemy.frame = 0;
+        enemy.lastFrame = 0.0f;
+
+        enemy.isAlive = true;
 
         lastDrop = GetTime();
     }

@@ -28,14 +28,69 @@ namespace BulletUtilities
         }
     }
 
-    void DrawBullet(Bullet bullet)
+    void DrawBullet(Bullet& bullet)
     {
+        float size = bullet.radius * 2.0f;
+
         if (bullet.isAlive)
         {
-            Rectangle dest = { bullet.GetCenter().x, bullet.GetCenter().y, static_cast<float>(bullet.texture.width), static_cast<float>(bullet.texture.height) };
-            Vector2 origin = { static_cast<float>(bullet.texture.width / 2), static_cast<float>(bullet.texture.height / 2) };
+            Vector2 origin = { bullet.radius, bullet.radius };
+            Rectangle dest = { bullet.GetCenter().x, bullet.GetCenter().y, size, size };
 
             DrawTexturePro(bullet.texture, bullet.source, dest, origin, bullet.rotation - 90, RAYWHITE);
+
+            switch (bullet.frame)
+            {
+            case 0:
+            {
+                bullet.source = { 0, 0, size, size };
+                DrawTexturePro(bullet.texture, bullet.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 1:
+            {
+                bullet.source = { size, 0, size, size };
+                DrawTexturePro(bullet.texture, bullet.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 2:
+            {
+                bullet.source = { size * 2, 0, size, size };
+                DrawTexturePro(bullet.texture, bullet.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 3:
+            {
+                bullet.source = { size * 3, 0, size, size };
+                DrawTexturePro(bullet.texture, bullet.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 4:
+            {
+                bullet.source = { size * 4, 0, size, size };
+                DrawTexturePro(bullet.texture, bullet.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 5:
+            {
+                bullet.source = { size * 5, 0, size, size };
+                DrawTexturePro(bullet.texture, bullet.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            }
+
+            double elapsedTime = GetTime() - bullet.lastFrame;
+
+            if (elapsedTime > 0.09f)
+            {
+                bullet.frame++;
+                bullet.lastFrame = GetTime();
+            }
+
+            if (bullet.frame > 5)
+            {
+                bullet.frame = 0;
+            }
         }
     }
 }

@@ -58,4 +58,12 @@ namespace ParallaxUtilities
 			DrawTextureV(layers[i].texture, { layers[i].position.x, layers[i].position.y - layers[i].texture.height }, RAYWHITE);
 		}
 	}
+
+	void UnloadParallaxTextures()
+	{
+		for (int i = 0; i < layersQnty; i++)
+		{
+			UnloadTexture(layers[i].texture);
+		}
+	}
 }

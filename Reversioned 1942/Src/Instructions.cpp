@@ -13,6 +13,8 @@ namespace Instructions
 		int mouseX = GetMouseX();
 		int mouseY = GetMouseY();
 
+		SetExitKey(KEY_Q);
+
 		if (IsKeyPressed(KEY_ESCAPE))
 		{
 			currentSceen = GameSceen::MENU;

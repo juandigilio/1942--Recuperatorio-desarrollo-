@@ -19,18 +19,21 @@ struct Player
     float maxSpeed = 250.0f;
 
     int availableLives = 3;
-    bool isColliding = false;
-    float lastCollide = 0.0f;
     bool isAlive = true;
 
     Texture2D texture{};
     Rectangle source{};
+    Texture2D explosionTexture{};
+    Rectangle explosionSource{};
     float radius{};
     float width{};
     float height{};
-    bool isSpeeding = false;
     int frame{};
+    int explosionFrame{};
     double lastFrame{};
+    bool isSpeeding = false;
+    bool isColliding = false;
+    float lastCollide = 0.0f;
 
     int totalPoints = 0;
     int thousandCouner = 0;
@@ -54,4 +57,8 @@ namespace PlayerUtilities
     extern void UpdatePlayer(Player& player);
 
     extern void DrawPlayer(Player& player);
+
+    extern bool ShowExplosion(Player& player);
+
+    extern void UnloadPlayerTextures(Player& player);
 }

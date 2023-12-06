@@ -14,10 +14,12 @@ struct Bullet
     bool isAlive = false;
     Texture2D texture{};
     Rectangle source{};
+    int frame = 0;
+    double lastFrame = 0.0f;
 
     Vector2 GetCenter()
     {
-        return { position.x + (texture.width / 2), position.y + (texture.height / 2) };
+        return { position.x + radius, position.y + radius };
     }
 };
 
@@ -25,5 +27,5 @@ namespace BulletUtilities
 {
     extern void MoveBullet(Bullet& bullet);
 
-    extern void DrawBullet(Bullet bullet);
+    extern void DrawBullet(Bullet& bullet);
 }

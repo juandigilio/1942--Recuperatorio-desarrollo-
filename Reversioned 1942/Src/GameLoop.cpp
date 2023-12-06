@@ -65,7 +65,8 @@ namespace GameLoop
 					if (actualDistance <= minDistance)
 					{
 						object.isAlive = false;
-
+						player.totalPoints += 50;
+						player.bullets[i].isAlive = false;
 					}
 				}
 			}
@@ -100,11 +101,14 @@ namespace GameLoop
 
 	static void RestartAllEntities(Player& player, vector<Enemy>& enemies)
 	{
-		player.position.x = screenCenter.x - (player.texture.width / 2);
-		player.position.y = screenCenter.y - (player.texture.height / 2);
+		player.position.x = screenCenter.x - player.texture.width / 2;
+		player.position.y = static_cast<float>(screenHeight - player.texture.height);
 		player.velocity = { 0, 0 };
 		player.totalPoints = 0;
 		player.thousandCouner = 0;
+		player.frame = 0;
+		player.explosionFrame = 0;
+		player.lastFrame = 0.0f;
 
 		for (int i = 0; i < maxBulletsQnty; i++)
 		{
@@ -112,23 +116,6 @@ namespace GameLoop
 		}
 
 		enemies.clear();
-	}
-
-	static void ShowCrash(Player& player, vector<Enemy>& enemies)
-	{
-		player.rotation += 1000.0f * GetFrameTime();
-
-		if (player.rotation >= 360.0f)
-		{
-			player.rotation = 0.0f;
-		}
-
-		if (GetTime() - player.lastCollide > 2.0f)
-		{
-			player.isColliding = false;
-
-			RestartAllEntities(player, enemies);
-		}
 	}
 
 	static void GetHUDInput(GameSceen& currentSceen)
@@ -175,9 +162,19 @@ namespace GameLoop
 	{
 		DrawParallax();
 
-		DrawPlayer(player);
-
 		DrawEnemies(enemies);
+
+		if (!player.isColliding)
+		{
+			DrawPlayer(player);
+		}
+		else
+		{
+			if (ShowExplosion(player))
+			{
+				RestartAllEntities(player, enemies);
+			}
+		}
 
 		DrawHUD(player);
 	}
@@ -189,10 +186,6 @@ namespace GameLoop
 			GetPlayerInput(player, currentSceen);
 
 			UpdateAll(player, enemies, currentSceen);
-		}
-		else
-		{
-			ShowCrash(player, enemies);
 		}
 
 		DrawGame(player, enemies);
@@ -212,5 +205,12 @@ namespace GameLoop
 		}
 
 		GameLoop(player, enemies, currentSceen);
+	}
+
+	void UnloadGameLoopTextures()
+	{
+		UnloadTexture(pauseButton);
+		UnloadTexture(pauseButtonAct);
+		UnloadSound(crash);
 	}
 }
