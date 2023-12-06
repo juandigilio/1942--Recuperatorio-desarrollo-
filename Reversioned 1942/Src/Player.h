@@ -8,35 +8,40 @@
 
 using namespace GameData;
 
-const int maxBulletsQnty = 30;
+static const int maxBulletsQnty = 30;
 
 struct Player
 {
     Vector2 position{};
     Vector2 velocity{};
-    Vector2 direction{};
-    float speed = {};
-    float maxSpeed = 250.0f;
-    float rotation = 0.0f;
-    float interpolationFactor = 50.0f;
     float targetRotation{};
-    float radius{};
-    int totalPoints = 0;
-    int thousandCouner = 0;
+    float rotation = 0.0f;
+    float maxSpeed = 250.0f;
+
     int availableLives = 3;
     bool isColliding = false;
     float lastCollide = 0.0f;
     bool isAlive = true;
+
     Texture2D texture{};
     Rectangle source{};
-    Sound shoot{};
+    float radius{};
+    float width{};
+    float height{};
+    bool isSpeeding = false;
+    int frame{};
+    double lastFrame{};
+
+    int totalPoints = 0;
+    int thousandCouner = 0;
     Sound thousand{};
 
     Bullet bullets[maxBulletsQnty]{};
+    Sound shoot{};
 
     Vector2 GetCenter()
     {
-        return { position.x + (texture.width / 2), position.y + (texture.height / 2) };
+        return { position.x + (width / 2), position.y + (width / 2) };
     }
 };
 

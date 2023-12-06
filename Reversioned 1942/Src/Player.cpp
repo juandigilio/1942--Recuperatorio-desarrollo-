@@ -10,20 +10,25 @@ using namespace std;
 
 namespace PlayerUtilities
 {
+    static const float textureWidth = 100.0f;
+    static const float textureHeight = 150.0f;
+
 	void LoadPlayer(Player& player)
 	{
         player.texture = LoadTexture("Assets/Images/ship.png");
         player.position.x = screenCenter.x - player.texture.width / 2;
-        player.position.y = screenCenter.y - player.texture.height / 2;
-        player.radius = player.texture.width / 2.0f;
-        player.source = { 0, 0, static_cast<float>(player.texture.width), static_cast<float>(player.texture.height) };
+        player.position.y = static_cast<float>(screenHeight - player.texture.height);
+        player.radius = textureWidth / 2.0f;
+        player.width = textureWidth;
+        player.height = textureHeight;
+        player.source = { 0, 0, player.width, player.height };
         player.totalPoints = 0;
         player.availableLives = 3;
-        player.speed = 500.0f;
-
+        player.frame = 0;
+        player.lastFrame = 0.0f;
+        
         player.shoot = LoadSound("Assets/Sounds/shoot.wav");
         player.thousand = LoadSound("Assets/Sounds/crash.wav");
-
 
         for (int i = 0; i < maxBulletsQnty; i++)
         {
@@ -81,21 +86,20 @@ namespace PlayerUtilities
 
 	void GetPlayerInput(Player& player, GameSceen& currentSceen)
 	{
-        double y = static_cast<double>(GetMousePosition().y - static_cast<double>(player.texture.height / 2.0f)) - player.position.y;
-        double x = static_cast<double>(GetMousePosition().x - static_cast<double>(player.texture.width / 2.0f)) - player.position.x;
+        double y = static_cast<double>(GetMousePosition().y - static_cast<double>(player.height / 2.0f)) - player.position.y;
+        double x = static_cast<double>(GetMousePosition().x - static_cast<double>(player.width / 2.0f)) - player.position.x;
 
         player.rotation = static_cast<float>(atan2(y, x)) * RAD2DEG + 90.0f;
 
         if (IsKeyDown(KEY_UP))
         {
             player.velocity.y = (- player.maxSpeed);
-            cout << "velociti Y: " << player.velocity.y << endl;
-            cout << "speed: " << player.maxSpeed << endl;
+            player.isSpeeding = true;
         }
         else if (IsKeyDown(KEY_DOWN))
         {
             player.velocity.y = (player.maxSpeed);
-            cout << "velociti Y: " << player.velocity.y << endl;
+            player.isSpeeding = true;
         }
         else
         {
@@ -105,18 +109,24 @@ namespace PlayerUtilities
         if (IsKeyDown(KEY_LEFT))
         {
             player.velocity.x = (-player.maxSpeed);
-            cout << "velociti X: " << player.velocity.x << endl;
+            player.isSpeeding = true;
         }
         else if (IsKeyDown(KEY_RIGHT))
         {
             player.velocity.x = (player.maxSpeed);
-            cout << "velociti X: " << player.velocity.x << endl;
+            player.isSpeeding = true;
         }
         else
         {
             player.velocity.x = 0.0f;
         }
 
+        if (player.velocity.x == 0 && player.velocity.y == 0)
+        {
+            player.isSpeeding = false;
+        }
+
+    
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
             Shoot(player);
@@ -149,14 +159,67 @@ namespace PlayerUtilities
 
 	void DrawPlayer(Player& player)
 	{
-        Rectangle dest = { player.GetCenter().x, player.GetCenter().y, static_cast<float>(player.texture.width), static_cast<float>(player.texture.height) };
-        Vector2 origin = { static_cast<float>(player.texture.width / 2), static_cast<float>(player.texture.height / 2) };
-
-        DrawTexturePro(player.texture, player.source, dest, origin, player.rotation + 90.0f, RAYWHITE);
-
         for (int i = 0; i < maxBulletsQnty; i++)
         {
             BulletUtilities::DrawBullet(player.bullets[i]);
+        }
+
+        const float rotationCenterX = 50.0f;
+        const float rotationCenterY = 50.0f;
+        Vector2 origin = { rotationCenterX, rotationCenterY };
+
+        if (player.isSpeeding)
+        {
+            Rectangle dest = { player.GetCenter().x, player.GetCenter().y, player.width, player.height };
+
+            switch (player.frame)
+            {
+            case 0:
+            {
+                player.source = { player.width, 0, player.width, player.height };
+                DrawTexturePro(player.texture, player.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 1:
+            {
+                player.source = { player.width * 2, 0, player.width, player.height };
+                DrawTexturePro(player.texture, player.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 2:
+            {
+                player.source = { player.width * 3, 0, player.width, player.height };
+                DrawTexturePro(player.texture, player.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            case 3:
+            {
+                player.source = { player.width * 4, 0, player.width, player.height };
+                DrawTexturePro(player.texture, player.source, dest, origin, 0.0f, RAYWHITE);
+                break;
+            }
+            }
+
+            double elapsedTime = GetTime() - player.lastFrame;
+
+            if (elapsedTime > 0.07f)
+            {
+                player.frame++;
+
+                player.lastFrame = GetTime();
+
+                if (player.frame > 3)
+                {
+                    player.frame = 0;
+                }
+            }
+        }
+        else
+        {
+            Rectangle dest = { player.GetCenter().x, player.GetCenter().y, static_cast<float>(player.width), static_cast<float>(player.height) };
+            player.source = { 0, 0, static_cast<float>(player.width), static_cast<float>(player.height) };
+
+            DrawTexturePro(player.texture, player.source, dest, origin, 0.0f, RAYWHITE);
         }
 	}
 }

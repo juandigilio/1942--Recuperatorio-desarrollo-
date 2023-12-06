@@ -103,7 +103,6 @@ namespace GameLoop
 		player.position.x = screenCenter.x - (player.texture.width / 2);
 		player.position.y = screenCenter.y - (player.texture.height / 2);
 		player.velocity = { 0, 0 };
-		player.speed = 0;
 		player.totalPoints = 0;
 		player.thousandCouner = 0;
 
@@ -172,7 +171,7 @@ namespace GameLoop
 		DrawTextureEx(pauseButton, pauseButtonPos, 0, 1.0, WHITE);
 	}
 
-	void DrawGame(Player player, vector<Enemy> enemies)
+	void DrawGame(Player& player, vector<Enemy>& enemies)
 	{
 		DrawParallax();
 
