@@ -1,7 +1,13 @@
 @echo off
 
-echo Copying asstets
+echo Copying Assets
 
-xcopy /y /i /s "C:\Users\juani\OneDrive\Documentos\GitHub\1942--Recuperatorio-desarrollo-\Reversioned 1942\Assets" "C:\Users\juani\OneDrive\Documentos\GitHub\1942--Recuperatorio-desarrollo-\Reversioned 1942\Bin\Release\Assets"
+Set input="%~1Assets"
+Set output="%~2Assets"
+
+
+
+xcopy /y /i /s %input% %output%
+
 
 echo Assets copied successfully
