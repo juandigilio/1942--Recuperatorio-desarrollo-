@@ -67,7 +67,6 @@ namespace PlayerUtilities
 
                 player.bullets[i].position.x = x;
                 player.bullets[i].position.y = y;
-                //player.bullets[i].position = player.GetCenter();
                 player.bullets[i].rotation = player.rotation;
                 player.bullets[i].isAlive = true;
 
@@ -183,7 +182,7 @@ namespace PlayerUtilities
 
             if (spawnRateHardnes < 0.2f)
             {
-                spawnRateHardnes = 0.0f;
+                spawnRateHardnes = 0.2f;
             }
 
             if (enemySpeedHardnes > 2000.0f)
@@ -399,6 +398,7 @@ namespace PlayerUtilities
         if (player.explosionFrame > 7)
         {
             player.isColliding = false;
+            
             return true;
         }
 

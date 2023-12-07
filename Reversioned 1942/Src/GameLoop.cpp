@@ -16,14 +16,37 @@ namespace GameLoop
 {
 	Sound crash{};
 
-	
-
 	static void LoadGame()
 	{
 		crash = LoadSound("Assets/Sounds/crash.wav");
 	}
 
-	static void PlayerCollides(Player& player, GameSceen& currentSceen)
+	static void RestartAllEntities(Player& player, vector<Enemy>& enemies)
+	{
+		player.position.x = screenCenter.x - player.texture.width / 2;
+		player.position.y = static_cast<float>(screenHeight - player.texture.height);
+		player.velocity = { 0, 0 };
+		player.totalPoints = 0;
+		player.thousandCouner = 0;
+		player.frame = 0;
+		player.explosionFrame = 0;
+		player.lastFrame = 0.0f;
+
+		ResetParallax();
+
+		enemySpeedHardnes = enemyBaseSpeed;
+		spawnRateHardnes = spawnRateBase;
+
+		for (int i = 0; i < maxBulletsQnty; i++)
+		{
+			player.bullets[i].isAlive = false;
+		}
+
+		enemies.clear();
+	}
+
+
+	static void PlayerCollides(Player& player)
 	{
 		player.isColliding = true;
 		player.lastCollide = static_cast<float>(GetTime());
@@ -35,13 +58,15 @@ namespace GameLoop
 			highScore = player.totalPoints;
 		}
 
-		if (player.availableLives == 0)
+		/*if (player.availableLives == 0 && !player.isColliding)
 		{
+			player.availableLives = 3;
+			RestartAllEntities(player, enemies);
 			currentSceen = GameSceen::RESULTS;
-		}
+		}*/
 	}
 
-	static void CheckCollisions(Player& player, vector<Enemy>& enemies, GameSceen& currentSceen)
+	static void CheckCollisions(Player& player, vector<Enemy>& enemies)
 	{
 		for (auto& object : enemies)
 		{
@@ -71,7 +96,8 @@ namespace GameLoop
 
 				if (actualDistance <= minDistance)
 				{
-					PlayerCollides(player, currentSceen);
+					PlayerCollides(player);
+				
 				}
 			}
 		}
@@ -79,7 +105,7 @@ namespace GameLoop
 		enemies.erase(remove_if(enemies.begin(), enemies.end(),[](const Enemy& enemy) { return !enemy.isAlive; }), enemies.end());
 	}
 
-	static void UpdateAll(Player& player, vector<Enemy>& enemies, GameSceen& currentSceen)
+	static void UpdateAll(Player& player, vector<Enemy>& enemies)
 	{	
 		UpdateParallax();
 
@@ -87,33 +113,9 @@ namespace GameLoop
 
 		UpdateEnemies(enemies);
 
-		CheckCollisions(player, enemies, currentSceen);
+		CheckCollisions(player, enemies);
 		
 		UpdateMusicStream(gameLoopMusic);
-	}
-
-	static void RestartAllEntities(Player& player, vector<Enemy>& enemies)
-	{
-		player.position.x = screenCenter.x - player.texture.width / 2;
-		player.position.y = static_cast<float>(screenHeight - player.texture.height);
-		player.velocity = { 0, 0 };
-		player.totalPoints = 0;
-		player.thousandCouner = 0;
-		player.frame = 0;
-		player.explosionFrame = 0;
-		player.lastFrame = 0.0f;
-
-		ResetParallax();
-
-		enemySpeedHardnes = enemyBaseSpeed;
-		spawnRateHardnes = spawnRateBase;
-
-		for (int i = 0; i < maxBulletsQnty; i++)
-		{
-			player.bullets[i].isAlive = false;
-		}
-
-		enemies.clear();
 	}
 
 	static void GetHUDInput(GameSceen& currentSceen)
@@ -186,7 +188,16 @@ namespace GameLoop
 		{
 			if (ShowExplosion(player))
 			{
-				RestartAllEntities(player, enemies);
+				if (player.availableLives == 0)
+				{
+					RestartAllEntities(player, enemies);
+					player.availableLives = 3;
+					currentSceen = GameSceen::RESULTS;
+				}
+				else
+				{
+					RestartAllEntities(player, enemies);
+				}
 			}
 		}
 
@@ -199,7 +210,7 @@ namespace GameLoop
 		{
 			GetPlayerInput(player, currentSceen);
 
-			UpdateAll(player, enemies, currentSceen);
+			UpdateAll(player, enemies);
 		}
 
 		DrawGame(player, enemies, currentSceen);
