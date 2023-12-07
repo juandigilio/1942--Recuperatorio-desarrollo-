@@ -224,6 +224,7 @@ namespace Menu
 			isInstructionsContainerSelected = false;
 			isCreditsContainerSelected = false;
 			isCreditsContainerSelected = false;
+			isExitContainerSelected = false;
 			isClicking = false;
 		}
 	}
