@@ -15,7 +15,7 @@ namespace FinalResults
 
 		DrawTexture(background, 0, 0, WHITE);
 		DrawTextureV(smallWindow, smallWindowPos, WHITE);
-		DrawTextureV(backButton, backButtonPos, WHITE);
+		DrawBackButton();
 
 		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "RESULTS", fontSize * 0.6f, spacing / 4.0f).x / 2.0f;
 		textPos.y = smallWindowPos.y + 30;
@@ -52,9 +52,9 @@ namespace FinalResults
 				highScore = player.totalPoints;
 			}
 		}
-		else if ((mouseX > backButtonPos.x && mouseX < backButtonPos.x + backButton.width) && (mouseY > backButtonPos.y && mouseY < backButtonPos.y + backButton.height))
+		else if ((mouseX > backButtonPos.x && mouseX < backButtonPos.x + buttonWidth) && (mouseY > backButtonPos.y && mouseY < backButtonPos.y + buttonHeight))
 		{
-			DrawTextureV(backButtonAct, backButtonPos, WHITE);
+			isBackButtonSelected = true;
 
 			if (!isClicking)
 			{
@@ -73,6 +73,11 @@ namespace FinalResults
 					highScore = player.totalPoints;
 				}
 			}
+		}
+		else
+		{
+			isBackButtonSelected = false;
+			isClicking = false;
 		}
 	}
 

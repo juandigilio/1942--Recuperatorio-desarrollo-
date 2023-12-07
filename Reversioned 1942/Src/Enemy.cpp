@@ -62,25 +62,15 @@ namespace EnemyUtilities
 
     void DrawEnemies(vector<Enemy>& enemies)
     {
+        const float enemyWidth = 100.0f;
+        const float enemyHeight = 100.0f;
+
+        Vector2 origin = { enemyWidth / 2.0f, enemyWidth / 2.0f };
 
         for (auto& enemy : enemies)
         {
-            Rectangle dest = { enemy.GetCenter().x, enemy.GetCenter().y, enemy.texture.width / 2.0f, static_cast<float>(enemy.texture.height) };
-            Vector2 origin = { enemy.texture.width / 4.0f, enemy.texture.height / 2.0f };
-
-            switch (enemy.frame)
-            {
-            case 0:
-            {
-                enemy.source = { 0.0f, 0.0f, enemy.texture.width / 2.0f, static_cast<float>(enemy.texture.height) };
-                break;
-            }
-            case 1:
-            {
-                enemy.source = { (enemy.texture.width / 2.0f), 0.0f, enemy.texture.width / 2.0f, static_cast<float>(enemy.texture.height) };
-                break;
-            }
-            }
+            Rectangle dest = { enemy.GetCenter().x, enemy.GetCenter().y, enemyWidth, enemyHeight };
+            enemy.source = { enemyWidth * enemy.frame, 0.0f, enemyWidth, enemyHeight };
 
             DrawTexturePro(enemy.texture, enemy.source, dest, origin, enemy.rotation + 90.0f, RAYWHITE);
 

@@ -4,30 +4,23 @@
 
 #include "Bullet.h"
 #include "Parallax.h"
+#include "Menu.h"
 
 
 using namespace PlayerUtilities;
 using namespace EnemyUtilities;
 using namespace ParallaxUtilities;
+using namespace Menu;
 
 namespace GameLoop
 {
 	Sound crash{};
 
-	Texture2D pauseButton{};
-	Texture2D pauseButtonAct{};
 	
-	Vector2 pauseButtonPos{};
 
 	static void LoadGame()
 	{
-		pauseButton = LoadTexture("Assets/Images/Menu/pauseBtn.png");
-		pauseButtonAct = LoadTexture("Assets/Images/Menu/pauseBtnAct.png");
-
 		crash = LoadSound("Assets/Sounds/crash.wav");
-
-		pauseButtonPos.x = screenWidth - pauseButton.width - 15.0f;
-		pauseButtonPos.y = 15.0f;
 	}
 
 	static void PlayerCollides(Player& player, GameSceen& currentSceen)
@@ -130,19 +123,32 @@ namespace GameLoop
 
 		if (currentSceen == GameSceen::GAME)
 		{
-			if ((mouseX > pauseButtonPos.x && mouseX < pauseButtonPos.x + pauseButton.width) && (mouseY > pauseButtonPos.y && mouseY < pauseButtonPos.y + pauseButton.height))
+			if ((mouseX > pauseButtonPos.x && mouseX < pauseButtonPos.x + buttonWidth) && (mouseY > pauseButtonPos.y && mouseY < pauseButtonPos.y + buttonHeight))
 			{
-				DrawTextureEx(pauseButtonAct, pauseButtonPos, 0, 1.0, WHITE);
+				isPauseButtonSelected = true;
+
+				if (!isClicking)
+				{
+					isClicking = true;
+
+					PlaySound(click);
+				}
 
 				if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 				{
+					PlaySound(clickPressed);
 					currentSceen = GameSceen::PAUSE;
 				}
+			}
+			else
+			{
+				isPauseButtonSelected = false;
+				isClicking = false;
 			}
 		}
 	}
 
-	static void DrawHUD(Player player)
+	static void DrawHUD(Player player, GameSceen& currentSceen)
 	{
 		Vector2 textPos;
 
@@ -160,10 +166,13 @@ namespace GameLoop
 		textPos.x += MeasureTextEx(font, "High score: ", fontSize * 0.25f, spacing / 8.0f).x;
 		DrawTextEx(font, TextFormat("%01i", highScore), textPos, fontSize * 0.25f, spacing / 8.0f, RAYWHITE);
 
-		DrawTextureEx(pauseButton, pauseButtonPos, 0, 1.0, WHITE);
+		if (currentSceen != GameSceen::PAUSE)
+		{
+			DrawPauseButton();
+		}
 	}
 
-	void DrawGame(Player& player, vector<Enemy>& enemies)
+	void DrawGame(Player& player, vector<Enemy>& enemies, GameSceen& currentSceen)
 	{
 		DrawParallax();
 
@@ -181,7 +190,7 @@ namespace GameLoop
 			}
 		}
 
-		DrawHUD(player);
+		DrawHUD(player, currentSceen);
 	}
 
 	static void GameLoop(Player& player, vector<Enemy>& enemies, GameSceen& currentSceen)
@@ -193,7 +202,7 @@ namespace GameLoop
 			UpdateAll(player, enemies, currentSceen);
 		}
 
-		DrawGame(player, enemies);
+		DrawGame(player, enemies, currentSceen);
 
 		GetHUDInput(currentSceen);
 	}
@@ -215,7 +224,6 @@ namespace GameLoop
 	void UnloadGameLoopTextures()
 	{
 		UnloadTexture(pauseButton);
-		UnloadTexture(pauseButtonAct);
 		UnloadSound(crash);
 	}
 }

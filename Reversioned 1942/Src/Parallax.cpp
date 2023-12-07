@@ -15,8 +15,6 @@ namespace ParallaxUtilities
 	{
 		layers[0].texture = LoadTexture("Assets/Images/Parallax/water.png");
 		layers[0].speed = 20.0f;
-		layers[0].texture.height = 768;
-		layers[0].texture.width = 1024;
 		layers[1].texture = LoadTexture("Assets/Images/Parallax/birds.png");
 		layers[1].speed = 35.0f;
 		layers[2].texture = LoadTexture("Assets/Images/Parallax/clouds.png");

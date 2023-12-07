@@ -19,9 +19,9 @@ namespace Pause
 
 		SetExitKey(KEY_Q);
 
-		if ((mouseX > backButtonPos.x && mouseX < backButtonPos.x + backButton.width) && (mouseY > backButtonPos.y && mouseY < backButtonPos.y + backButton.height))
+		if ((mouseX > backButtonPos.x && mouseX < backButtonPos.x + buttonWidth) && (mouseY > backButtonPos.y && mouseY < backButtonPos.y + buttonHeight))
 		{
-			DrawTextureV(backButtonAct, backButtonPos, WHITE);
+			isBackButtonSelected = true;
 
 			if (!isClicking)
 			{
@@ -36,9 +36,9 @@ namespace Pause
 				currentSceen = GameSceen::GAME;
 			}
 		}
-		else if ((mouseX > menuButtonPos.x && mouseX < menuButtonPos.x + menuButton.width) && (mouseY > menuButtonPos.y && mouseY < menuButtonPos.y + menuButton.height))
+		else if ((mouseX > menuButtonPos.x && mouseX < menuButtonPos.x + buttonWidth) && (mouseY > menuButtonPos.y && mouseY < menuButtonPos.y + buttonHeight))
 		{
-			DrawTextureV(menuButtonAct, menuButtonPos, WHITE);
+			isMenuButtonSelected = true;
 
 			if (!isClicking)
 			{
@@ -56,9 +56,9 @@ namespace Pause
 				PlayMusicStream(menuMusic);
 			}
 		}
-		else if ((mouseX > exitButtonPos.x && mouseX < exitButtonPos.x + exitButton.width) && (mouseY > exitButtonPos.y && mouseY < exitButtonPos.y + exitButton.height))
+		else if ((mouseX > exitButtonPos.x && mouseX < exitButtonPos.x + buttonWidth) && (mouseY > exitButtonPos.y && mouseY < exitButtonPos.y + buttonHeight))
 		{
-			DrawTextureV(exitButtonAct, exitButtonPos, WHITE);
+			isExitButtonSelected = true;
 
 			if (!isClicking)
 			{
@@ -75,6 +75,9 @@ namespace Pause
 		}
 		else
 		{
+			isBackButtonSelected = false;
+			isMenuButtonSelected = false;
+			isExitButtonSelected = false;
 			isClicking = false;
 		}
 
@@ -86,17 +89,17 @@ namespace Pause
 
 	}
 
-	static void DrawPause(Player player, vector<Enemy> enemies)
+	static void DrawPause(Player player, vector<Enemy> enemies, GameSceen& currentSceen)
 	{
-		GameLoop::DrawGame(player, enemies);
+		GameLoop::DrawGame(player, enemies, currentSceen);
 
 		smallWindowPos.x = (screenWidth / 2.0f) - (smallWindow.width / 2.0f);
 		smallWindowPos.y = (screenHeight / 2.0f) - (smallWindow.height / 2.0f);
 
 		DrawTextureV(smallWindow, smallWindowPos, WHITE);
-		DrawTextureV(backButton, backButtonPos, WHITE);
-		DrawTextureV(menuButton, menuButtonPos, WHITE);
-		DrawTextureV(exitButton, exitButtonPos, WHITE);
+		DrawBackButton();
+		DrawMenuButton();
+		DrawExitButton();
 
 		Vector2 textPos;
 
@@ -111,7 +114,7 @@ namespace Pause
 
 	void ShowPause(Player player, vector<Enemy> enemies, GameSceen& currentSceen)
 	{
-		DrawPause(player, enemies);
+		DrawPause(player, enemies, currentSceen);
 
 		UpdateMusicStream(menuMusic);
 

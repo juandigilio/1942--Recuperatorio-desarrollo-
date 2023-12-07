@@ -21,23 +21,24 @@ namespace Credits
 
 		DrawTexture(background, 0, 0, WHITE);
 		DrawTextureV(smallWindow, smallWindowPos, WHITE);
-		DrawTextureV(backButton, backButtonPos, WHITE);
+
+		DrawBackButton();
 
 		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "Created by Juan Digilio", fontSize * 0.65f, spacing / 4.0f).x / 2.0f;
 		textPos.y = smallWindowPos.y - 150;
-		DrawTextEx(font, "Created by Juan Digilio", textPos, fontSize * 0.65f, spacing / 4.0f, RAYWHITE);
+		DrawTextEx(font, "Created by Juan Digilio", textPos, fontSize * 0.65f, spacing / 4.0f, BLACK);
 
 		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "Game art by Juan Digilio", fontSize * 0.4f, spacing / 8.0f).x / 2.0f;
 		textPos.y += 55;
-		DrawTextEx(font, "Game art by Juan Digilio", textPos, fontSize * 0.4f, spacing / 8.0f, RAYWHITE);
+		DrawTextEx(font, "Game art by Juan Digilio", textPos, fontSize * 0.4f, spacing / 8.0f, BLACK);
 
 		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "Menu assets by MattWalkden", fontSize * 0.25f, spacing / 8.0f).x / 2.0f;
 		textPos.y += 35;
-		DrawTextEx(font, "Menu assets by MattWalkden", textPos, fontSize * 0.25f, spacing / 8.0f, RAYWHITE);
+		DrawTextEx(font, "Menu assets by MattWalkden", textPos, fontSize * 0.25f, spacing / 8.0f, BLACK);
 
 		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "Downloaded from craftpix.net", fontSize * 0.25f, spacing / 8.0f).x / 2.0f;
 		textPos.y += 20;
-		DrawTextEx(font, "Downloaded from craftpix.net", textPos, fontSize * 0.25f, spacing / 8.0f, RAYWHITE);
+		DrawTextEx(font, "Downloaded from craftpix.net", textPos, fontSize * 0.25f, spacing / 8.0f, BLACK);
 		///////
 		textPos.x = (screenWidth / 2) - MeasureTextEx(font, "Special thanks to Image-Campus", fontSize * 0.2f, spacing / 8.0f).x / 2.0f;
 		textPos.y += 60;
@@ -82,9 +83,9 @@ namespace Credits
 		int mouseX = GetMouseX();
 		int mouseY = GetMouseY();
 
-		if ((mouseX > backButtonPos.x && mouseX < backButtonPos.x + backButton.width) && (mouseY > backButtonPos.y && mouseY < backButtonPos.y + backButton.height))
+		if ((mouseX > backButtonPos.x && mouseX < backButtonPos.x + buttonWidth) && (mouseY > backButtonPos.y && mouseY < backButtonPos.y + buttonHeight))
 		{
-			DrawTextureV(backButtonAct, backButtonPos, WHITE);
+			isBackButtonSelected = true;
 
 			if (!isClicking)
 			{
@@ -136,6 +137,7 @@ namespace Credits
 		else
 		{
 			isClicking = false;
+			isBackButtonSelected = false;
 		}
 
 		if (IsKeyPressed(KEY_ESCAPE))

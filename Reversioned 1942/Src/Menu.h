@@ -10,10 +10,7 @@ using namespace GameData;
 namespace Menu
 {
 	extern Texture2D background;
-	extern Texture2D smallContainer;
-	extern Texture2D mediumContainer;
-	extern Texture2D largeContainer;
-	extern Texture2D play;
+	extern Texture2D playContainer;
 	extern Texture2D playSelect;
 	extern Texture2D instructions;
 	extern Texture2D credits;
@@ -21,12 +18,19 @@ namespace Menu
 
 	extern Texture2D bigWindow;
 	extern Texture2D smallWindow;
-	extern Texture2D backButton;
-	extern Texture2D backButtonAct;
+
+	extern Texture2D backButton;	
+	extern bool isBackButtonSelected;
+
 	extern Texture2D menuButton;
-	extern Texture2D menuButtonAct;
+	extern bool isMenuButtonSelected;
+	
 	extern Texture2D exitButton;
-	extern Texture2D exitButtonAct;
+	extern bool isExitButtonSelected;
+
+	extern Texture2D pauseButton;
+	extern bool isPauseButtonSelected;
+
 
 	extern Sound click;
 	extern Sound clickPressed;
@@ -44,12 +48,24 @@ namespace Menu
 	extern Vector2 backButtonPos;
 	extern Vector2 menuButtonPos;
 	extern Vector2 exitButtonPos;
+	extern Vector2 pauseButtonPos;
 
 	extern bool isClicking;
+
+	extern const float buttonWidth;
+	extern const float buttonHeight;
 
 	extern void ShowMenu(GameSceen& currentSceen);
 
 	extern void InitMenu();
+
+	extern void DrawBackButton();
+
+	extern void DrawExitButton();
+
+	extern void DrawMenuButton();
+
+	extern void DrawPauseButton();
 
 	extern void UnloadMenuTextures();
 }
